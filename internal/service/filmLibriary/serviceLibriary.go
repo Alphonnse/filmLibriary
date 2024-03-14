@@ -1,6 +1,8 @@
 package filmlibriary
 
-import "github.com/Alphonnse/filmLibriary/internal/repository"
+import (
+	"github.com/Alphonnse/filmLibriary/internal/repository"
+)
 
 type serviceLibriary struct {
 	libriaryRepository repository.Respository

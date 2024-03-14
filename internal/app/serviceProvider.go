@@ -7,33 +7,27 @@ import (
 	"github.com/Alphonnse/filmLibriary/internal/api/user"
 	"github.com/Alphonnse/filmLibriary/internal/config"
 	"github.com/Alphonnse/filmLibriary/internal/repository"
-	newone "github.com/Alphonnse/filmLibriary/internal/repository/sqlc"
+	sqlcRepo "github.com/Alphonnse/filmLibriary/internal/repository/sqlc"
 	"github.com/Alphonnse/filmLibriary/internal/service"
-	userService "github.com/Alphonnse/filmLibriary/internal/service/user"
 	libriaryService "github.com/Alphonnse/filmLibriary/internal/service/filmLibriary"
+	userService "github.com/Alphonnse/filmLibriary/internal/service/user"
 )
 
 type serviceProvider struct {
-	serverConfig config.ServerConfig
-
-	databaseConfig config.DatabaseConfig
-
-	repository repository.Respository
-
-	userService service.ServiceUserShape
-
+	serverConfig    config.ServerConfig
+	databaseConfig  config.DatabaseConfig
+	repository      repository.Respository
+	userService     service.ServiceUserShape
 	libriaryService service.ServiceLibriaryShape
-
-	userImpl *user.ImplementationUser
-
-	libriaryImpl *filmlibriary.ImplementationLibriary
+	userImpl        *user.ImplementationUser
+	libriaryImpl    *filmlibriary.ImplementationLibriary
 }
 
-func NewServiceProvider() *serviceProvider{
+func NewServiceProvider() *serviceProvider {
 	return &serviceProvider{}
 }
 
-func (s *serviceProvider) ServerConfig() config.ServerConfig{
+func (s *serviceProvider) ServerConfig() config.ServerConfig {
 	if s.serverConfig == nil {
 		cfg, err := config.NewServerConfig()
 		if err != nil {
@@ -44,7 +38,7 @@ func (s *serviceProvider) ServerConfig() config.ServerConfig{
 	return s.serverConfig
 }
 
-func (s *serviceProvider) DatabaseConfig() config.DatabaseConfig{
+func (s *serviceProvider) DatabaseConfig() config.DatabaseConfig {
 	if s.databaseConfig == nil {
 		cfg, err := config.NewDatabaseConfig()
 		if err != nil {
@@ -55,16 +49,16 @@ func (s *serviceProvider) DatabaseConfig() config.DatabaseConfig{
 	return s.databaseConfig
 }
 
-func (s *serviceProvider) Repository() repository.Respository{
+func (s *serviceProvider) Repository() repository.Respository {
 	if s.repository == nil {
-		s.repository = newone.NewRepository(
+		s.repository = sqlcRepo.NewRepository(
 			s.DatabaseConfig(),
 		)
 	}
-	return nil
+	return s.repository 
 }
 
-func (s *serviceProvider) UserService() service.ServiceUserShape{
+func (s *serviceProvider) UserService() service.ServiceUserShape {
 	if s.userService == nil {
 		s.userService = userService.NewServiceUser(
 			s.Repository(),
@@ -73,11 +67,29 @@ func (s *serviceProvider) UserService() service.ServiceUserShape{
 	return s.userService
 }
 
-func (s *serviceProvider) LibriaryService() service.ServiceLibriaryShape{
+func (s *serviceProvider) LibriaryService() service.ServiceLibriaryShape {
 	if s.libriaryService == nil {
 		s.libriaryService = libriaryService.NewServiceLibriary(
 			s.Repository(),
 		)
 	}
 	return s.libriaryService
+}
+
+func (s *serviceProvider) LibriaryImpl() filmlibriary.ImplementationLibriary {
+	if s.libriaryImpl == nil {
+		s.libriaryImpl = filmlibriary.NewImplementationLibriary(
+			s.LibriaryService(),
+		)
+	}
+	return *s.libriaryImpl
+}
+
+func (s *serviceProvider) UserImpl() user.ImplementationUser {
+	if s.userImpl == nil {
+		s.userImpl = user.NewImplementationUser(
+			s.UserService(),
+		)
+	}
+	return *s.userImpl
 }

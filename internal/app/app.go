@@ -2,13 +2,16 @@ package app
 
 import (
 	"context"
+	"log"
+	"net/http"
 
 	"github.com/Alphonnse/filmLibriary/internal/config"
 )
 
-type App struct{
+type App struct {
 	serviceProvider *serviceProvider
-	// server of some type
+	server          *http.Server
+	mux             *http.ServeMux
 }
 
 func NewApp(ctx context.Context) (*App, error) {
@@ -23,14 +26,15 @@ func NewApp(ctx context.Context) (*App, error) {
 }
 
 func (a *App) Run() error {
-	// return a.runGRPCServer()
+	log.Printf("Running server on: %s", a.serviceProvider.serverConfig.Address())
+	return a.runServer()
 }
 
 func (a *App) initDeps(ctx context.Context) error {
 	inits := []func(context.Context) error{
-		// a.initConfig,
-		// a.initServiceProvider,
-		// a.initGRPCServer,
+		a.initConfig,
+		a.initServiceProvider,
+		a.initServer,
 	}
 
 	for _, f := range inits {
@@ -40,6 +44,7 @@ func (a *App) initDeps(ctx context.Context) error {
 		}
 	}
 
+	log.Println("dependencies are satisfied")
 	return nil
 }
 
@@ -53,32 +58,38 @@ func (a *App) initConfig(_ context.Context) error {
 }
 
 func (a *App) initServiceProvider(_ context.Context) error {
-	a.serviceProvider = NewServiceProvider()
+    a.serviceProvider = NewServiceProvider()
+
+    a.serviceProvider.ServerConfig()
+    a.serviceProvider.DatabaseConfig()
+    a.serviceProvider.Repository()
+    a.serviceProvider.UserService()
+    a.serviceProvider.LibriaryService()
+	a.serviceProvider.LibriaryImpl()
+	a.serviceProvider.UserImpl()
+
+	log.Println("Service provider initialized")
+    return nil
+}
+
+func (a *App) initServer(_ context.Context) error {
+	a.mux = http.NewServeMux()
+	a.server = &http.Server{
+		Addr:    a.serviceProvider.ServerConfig().Address(),
+		Handler: a.mux,
+	}
 	return nil
 }
 
-// func (a *App) initGRPCServer(_ context.Context) error {
-// 	a.grpcServer = grpc.NewServer(grpc.Creds(insecure.NewCredentials()))
-//
-// 	reflection.Register(a.grpcServer)
-//
-// 	desc.RegisterUserV1Server(a.grpcServer, a.serviceProvider.UserImpl())
-//
-// 	return nil
-// }
-//
-// func (a *App) runGRPCServer() error {
-// 	log.Printf("GRPC server is running on %s", a.serviceProvider.GRPCConfig().Address())
-//
-// 	list, err := net.Listen("tcp", a.serviceProvider.GRPCConfig().Address())
-// 	if err != nil {
-// 		return err
-// 	}
-//
-// 	err = a.grpcServer.Serve(list)
-// 	if err != nil {
-// 		return err
-// 	}
-//
-// 	return nil
-// }
+func (a *App) runServer() error {
+	a.setupRoutes()
+	err := a.server.ListenAndServe()
+	if err != nil {
+		log.Fatalln("Error server listening")
+	}
+	return err 
+}
+
+func (a *App) setupRoutes() {
+	a.mux.HandleFunc("/", a.serviceProvider.libriaryImpl.AddActorInfo)
+}
