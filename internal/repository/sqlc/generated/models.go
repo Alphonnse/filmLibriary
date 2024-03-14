@@ -36,10 +36,17 @@ type Film struct {
 	UpdatedAt   time.Time
 }
 
+type Role struct {
+	ID          int32
+	Name        string
+	Description string
+}
+
 type User struct {
 	ID        uuid.UUID
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	RoleID    int32
 	Name      string
 	Password  string
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }

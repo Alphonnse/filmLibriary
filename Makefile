@@ -8,6 +8,7 @@ get-deps:
 	go get -u github.com/joho/godotenv
 	go get -u github.com/google/uuid
 	go get -u github.com/lib/pq
+	go get -u github.com/golang-jwt/jwt/v5
 
 generate-repository:
 	make generate-sqlc && make up-goose-migration

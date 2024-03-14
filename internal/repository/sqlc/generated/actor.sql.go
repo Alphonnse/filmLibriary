@@ -51,3 +51,54 @@ func (q *Queries) AddActorInfo(ctx context.Context, arg AddActorInfoParams) (Act
 	)
 	return i, err
 }
+
+const changeActorInfo = `-- name: ChangeActorInfo :one
+UPDATE actors 
+SET name = $2,
+	sex = $3,
+	birthday = $4,
+	otherInfo = $5,
+	updated_at = $6
+WHERE id = $1
+RETURNING id, name, sex, birthday, otherinfo, created_at, updated_at
+`
+
+type ChangeActorInfoParams struct {
+	ID        uuid.UUID
+	Name      string
+	Sex       string
+	Birthday  string
+	Otherinfo sql.NullString
+	UpdatedAt time.Time
+}
+
+func (q *Queries) ChangeActorInfo(ctx context.Context, arg ChangeActorInfoParams) (Actor, error) {
+	row := q.db.QueryRowContext(ctx, changeActorInfo,
+		arg.ID,
+		arg.Name,
+		arg.Sex,
+		arg.Birthday,
+		arg.Otherinfo,
+		arg.UpdatedAt,
+	)
+	var i Actor
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Sex,
+		&i.Birthday,
+		&i.Otherinfo,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
+const rmActorInfo = `-- name: RmActorInfo :exec
+DELETE FROM actors WHERE id = $1
+`
+
+func (q *Queries) RmActorInfo(ctx context.Context, id uuid.UUID) error {
+	_, err := q.db.ExecContext(ctx, rmActorInfo, id)
+	return err
+}

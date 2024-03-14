@@ -22,3 +22,16 @@ type AddActorInfoRequest struct {
 	Birthday  string `json:"birthday"`
 	OtherInfo string `json:"otherInfo"`
 }
+
+type ChangeActorInfoRequest struct {
+	UUID      uuid.UUID `json:"uuid"`
+	Name      string    `json:"name"`
+	Sex       string    `json:"sex"`
+	Birthday  string    `json:"birthday"`
+	OtherInfo string    `json:"otherInfo"`
+}
+
+
+type RmActorInfoRequest struct {
+	UUID      uuid.UUID `json:"uuid"`
+}

@@ -62,11 +62,13 @@ func (a *App) initServiceProvider(_ context.Context) error {
 
     a.serviceProvider.ServerConfig()
     a.serviceProvider.DatabaseConfig()
+	a.serviceProvider.JwtConfig()
     a.serviceProvider.Repository()
     a.serviceProvider.UserService()
     a.serviceProvider.LibriaryService()
 	a.serviceProvider.LibriaryImpl()
 	a.serviceProvider.UserImpl()
+	a.serviceProvider.AuthService()
 
 	log.Println("Service provider initialized")
     return nil
@@ -91,5 +93,7 @@ func (a *App) runServer() error {
 }
 
 func (a *App) setupRoutes() {
-	a.mux.HandleFunc("/", a.serviceProvider.libriaryImpl.AddActorInfo)
+	a.mux.HandleFunc("/actor/addActorInfo", a.serviceProvider.authService.MiddlewareAuth(a.serviceProvider.libriaryImpl.AddActorInfo))
+	a.mux.HandleFunc("/actor/changeActorInfo", a.serviceProvider.authService.MiddlewareAuth(a.serviceProvider.libriaryImpl.ChangeActorInfo))
+	a.mux.HandleFunc("/actor/remove/", a.serviceProvider.authService.MiddlewareAuth(a.serviceProvider.libriaryImpl.RmActorInfo))
 }
