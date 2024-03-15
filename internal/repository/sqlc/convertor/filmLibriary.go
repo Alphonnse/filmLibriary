@@ -16,3 +16,27 @@ func FromDatabaseActorToActor(dbActor *generated.Actor) *model.ActorModel {
 		Updated_at: dbActor.UpdatedAt,
 	}
 }
+
+func FromDatabaseFilmToFilmResponse(dbFilm *generated.Film) *model.FilmModelResponse {
+	return &model.FilmModelResponse{
+		UUID:        dbFilm.ID,
+		Title:       dbFilm.Title,
+		Description: dbFilm.Description.String,
+		ReleaseDate: dbFilm.Releasedate.String,
+		Rate:        int(dbFilm.Rate.Int32),
+		Created_at:  dbFilm.CreatedAt,
+		Updated_at:  dbFilm.UpdatedAt,
+	}
+}
+
+func FromDatabaseFilmToFilm(dbFilm *generated.Film) *model.FilmModel {
+	return &model.FilmModel{
+		UUID:        dbFilm.ID,
+		Title:       dbFilm.Title,
+		Description: dbFilm.Description.String,
+		ReleaseDate: dbFilm.Releasedate.String,
+		Rate:        int(dbFilm.Rate.Int32),
+		Created_at:  dbFilm.CreatedAt,
+		Updated_at:  dbFilm.UpdatedAt,
+	}
+}

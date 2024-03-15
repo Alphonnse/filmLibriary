@@ -30,7 +30,7 @@ type Film struct {
 	ID          uuid.UUID
 	Title       string
 	Description sql.NullString
-	Releasedate sql.NullTime
+	Releasedate sql.NullString
 	Rate        sql.NullInt32
 	CreatedAt   time.Time
 	UpdatedAt   time.Time

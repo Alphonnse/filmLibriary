@@ -2,6 +2,7 @@ package userauth
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/Alphonnse/filmLibriary/internal/api"
@@ -16,7 +17,7 @@ func (a *auth) JWTAdminAuth(handler func(http.ResponseWriter, *http.Request)) ht
 		}
 		err = a.ValidateAdminRoleJwt(w, r)
 		if err != nil {
-			api.RespondWithError(w, 401, fmt.Sprintf("Only Administrator is allowed to perform this action: %v", err))
+			api.RespondWithError(w, 500, fmt.Sprintf("Error authorization: %v", err))
 			return
 		}
 		handler(w, r)
@@ -33,6 +34,7 @@ func (a *auth) JWTRegularUserAuth(handler func(http.ResponseWriter, *http.Reques
 		err = a.ValidateRegularUesrRoleJWT(w, r)
 		if err != nil {
 			api.RespondWithError(w, 401, fmt.Sprintf("Only Administrator is allowed to perform this action: %v", err))
+			log.Println("Admission without permission")
 			return
 		}
 		handler(w, r)

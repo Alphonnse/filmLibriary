@@ -10,6 +10,9 @@ import (
 )
 
 func (s *serviceLibriary) ChangeActorInfo(ctx context.Context, model *model.ActorModel) (*model.ActorModel, error) {
+	prevActorInfo, err := s.libriaryRepository.GetActorByID(ctx, model.UUID)
+	model = defineActorFieldsToChange(model, prevActorInfo)
+
 	changedActorInfo, err := s.libriaryRepository.ChangeActorInfo(ctx, generated.ChangeActorInfoParams{
 		ID:        model.UUID,
 		Name:      model.Name,
@@ -18,9 +21,25 @@ func (s *serviceLibriary) ChangeActorInfo(ctx context.Context, model *model.Acto
 		Otherinfo: sql.NullString{String: model.OtherInfo, Valid: true},
 		UpdatedAt: time.Now().UTC(),
 	})
-
 	if err != nil {
 		return nil, err
 	}
+
 	return changedActorInfo, nil
+}
+
+func defineActorFieldsToChange(model, prevActorInfo *model.ActorModel) *model.ActorModel {
+	if model.Name == "" {
+		model.Name = prevActorInfo.Name
+	}
+	if model.Sex == "" {
+		model.Sex = prevActorInfo.Sex
+	}
+	if model.Birthday == "" {
+		model.Birthday = prevActorInfo.Birthday
+	}
+	if model.OtherInfo == "" {
+		model.OtherInfo = prevActorInfo.OtherInfo
+	}
+	return model
 }

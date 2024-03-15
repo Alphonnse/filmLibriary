@@ -23,7 +23,7 @@ func (i *ImplementationUser) GetUser(w http.ResponseWriter, r *http.Request) {
 	err := decoder.Decode(&params)
 	
 	if err != nil {
-		log.Printf("Error while decoding get user JSON: %v\n", err)
+		log.Printf("Error while decoding login JSON: %v\n", err)
 		api.RespondWithError(w, 400, fmt.Sprintf("Error parsing JSON: %v", err))
 		return
 	}

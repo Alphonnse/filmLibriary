@@ -26,6 +26,40 @@ func FromApiChangeActorInfoToService(info *model.ChangeActorInfoRequest) *model.
 
 func FromApiRmActorInfoToService(uuid uuid.UUID) *model.ActorModel {
 	return &model.ActorModel{
-		UUID:      uuid,
+		UUID: uuid,
+	}
+}
+
+func FromApiRmFilmInfoToService(uuid uuid.UUID) *model.FilmModel {
+	return &model.FilmModel{
+		UUID: uuid,
+	}
+}
+
+func FromApiAddFilmInfoToService(info *model.AddFilmInfoRequest) *model.FilmModel {
+	return &model.FilmModel{
+		Title:       info.Title,
+		Description: info.Description,
+		ReleaseDate: info.ReleaseDate,
+		Rate:        info.Rate,
+		Actors:      info.Actors,
+	}
+}
+
+func FromApiChangeFilmInfoToService(info *model.ChangeFilmInfoRequest) *model.FilmModelResponse {
+	var acts []*model.ActorModel
+	for _, actor := range info.Actors {
+		acts = append(acts, FromApiChangeActorInfoToService(&actor))
+	}
+	return &model.FilmModelResponse{
+		UUID:        info.UUID,
+		Title:       info.Title,
+		Description: info.Description,
+		ReleaseDate: info.ReleaseDate,
+		Rate:        info.Rate,
+		Actors:      acts,
+		// Actors:      info.Actors,
+		// Actors: 	FromApiChangeActorInfoToService(&info.Actors),
+		// Actors:      info.Actors,
 	}
 }

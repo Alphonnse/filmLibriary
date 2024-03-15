@@ -94,6 +94,25 @@ func (q *Queries) ChangeActorInfo(ctx context.Context, arg ChangeActorInfoParams
 	return i, err
 }
 
+const getActorByID = `-- name: GetActorByID :one
+SELECT id, name, sex, birthday, otherinfo, created_at, updated_at FROM actors WHERE id = $1
+`
+
+func (q *Queries) GetActorByID(ctx context.Context, id uuid.UUID) (Actor, error) {
+	row := q.db.QueryRowContext(ctx, getActorByID, id)
+	var i Actor
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Sex,
+		&i.Birthday,
+		&i.Otherinfo,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
 const rmActorInfo = `-- name: RmActorInfo :exec
 DELETE FROM actors WHERE id = $1
 `

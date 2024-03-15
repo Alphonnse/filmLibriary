@@ -15,3 +15,7 @@ RETURNING *;
 
 -- name: RmActorInfo :exec
 DELETE FROM actors WHERE id = $1;
+
+-- name: GetActorByID :one
+SELECT * FROM actors WHERE id = $1;
+

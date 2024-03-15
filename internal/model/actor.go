@@ -31,7 +31,6 @@ type ChangeActorInfoRequest struct {
 	OtherInfo string    `json:"otherInfo"`
 }
 
-
 type RmActorInfoRequest struct {
 	UUID      uuid.UUID `json:"uuid"`
 }

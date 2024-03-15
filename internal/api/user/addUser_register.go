@@ -24,7 +24,7 @@ func (i *ImplementationUser) AddUser(w http.ResponseWriter, r *http.Request) {
 	err := decoder.Decode(&params)
 	
 	if err != nil {
-		log.Printf("Error while decoding add user JSON: %v\n", err)
+		log.Printf("Error while decoding register JSON: %v\n", err)
 		api.RespondWithError(w, 400, fmt.Sprintf("Error parsing JSON: %v", err))
 		return
 	}
@@ -37,8 +37,8 @@ func (i *ImplementationUser) AddUser(w http.ResponseWriter, r *http.Request) {
 
 	addUserInfo, err := i.UserService.AddUser(r.Context(), convertor.FromApiAddUserService(&params))
 	if err != nil {
-		log.Printf("Error adding user: %v\n", err)
-		api.RespondWithError(w, 500, fmt.Sprintf("Couldn't add user : %v", err))
+		log.Printf("Error registering user: %v\n", err)
+		api.RespondWithError(w, 500, fmt.Sprintf("Couldn't registering user : %v", err))
 		return
 	}
 

@@ -7,10 +7,7 @@ CREATE TABLE roles (
 );
 
 INSERT INTO roles(name, description) 
-	VALUES 
-	('admin', 'can do anything'),
-	('Regular user', 'can only get info from api')
-);
+	VALUES ('admin', 'can do anything'), ('Regular user', 'can only get info from api');
 
 
 -- +goose Down

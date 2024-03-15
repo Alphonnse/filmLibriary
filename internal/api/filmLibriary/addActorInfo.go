@@ -13,10 +13,10 @@ import (
 
 func (i *ImplementationLibriary) AddActorInfo(w http.ResponseWriter, r *http.Request) {
 
-	// if r.Method != http.MethodPost {
-	// 	api.RespondWithError(w, 400, fmt.Sprintf("Wrong method: %s", r.Method))
-	// 	return
-	// }
+	if r.Method != http.MethodPost {
+		api.RespondWithError(w, 400, fmt.Sprintf("Wrong method: %s", r.Method))
+		return
+	}
 
 	params := model.AddActorInfoRequest{}
 
