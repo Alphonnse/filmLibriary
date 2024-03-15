@@ -15,4 +15,5 @@ type Respository interface {
 
 	AddUser(context.Context, generated.AddUserParams) (*model.UserModel, error)
 	GetUserByID(context.Context, uuid.UUID) (*model.UserModel, error)
+	GetUser(context.Context, string) (*model.UserModel, error)
 }

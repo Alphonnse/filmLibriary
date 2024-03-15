@@ -14,6 +14,6 @@ func NewAuthService(service service.ServiceUserShape, config config.JwtConfig) *
 	secret := config
 	return &auth{
 		UserService: service,
-		userAuth: secret,
+		userAuth:    secret,
 	}
 }

@@ -15,7 +15,8 @@ type UserModel struct {
 	Password   string    `json:"password"`
 }
 
-type AddUserModel struct {
-	Name     string `json:"name"`
-	Password string `json:"password"`
+type UserRequestModel struct {
+	UUID       uuid.UUID `json:"uuid"`
+	Role_id    int       `json:"role_id"`
+	Name       string    `json:"name"`
 }

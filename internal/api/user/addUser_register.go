@@ -18,11 +18,11 @@ func (i *ImplementationUser) AddUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	params := model.AddUserModel{}
+	params := model.Register{}
 
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&params)
-
+	
 	if err != nil {
 		log.Printf("Error while decoding add user JSON: %v\n", err)
 		api.RespondWithError(w, 400, fmt.Sprintf("Error parsing JSON: %v", err))
@@ -38,10 +38,10 @@ func (i *ImplementationUser) AddUser(w http.ResponseWriter, r *http.Request) {
 	addUserInfo, err := i.UserService.AddUser(r.Context(), convertor.FromApiAddUserService(&params))
 	if err != nil {
 		log.Printf("Error adding user: %v\n", err)
-		api.RespondWithError(w, 400, fmt.Sprintf("Couldn't add user : %v", err))
+		api.RespondWithError(w, 500, fmt.Sprintf("Couldn't add user : %v", err))
 		return
 	}
 
 	api.RespondWithJSON(w, 201, addUserInfo)
-	log.Printf("New actor is added: %s", params)
+	log.Printf("user %s is registered", params.Name)
 }

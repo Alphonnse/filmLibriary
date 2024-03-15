@@ -6,6 +6,12 @@ CREATE TABLE roles (
 	description TEXT NOT NULL UNIQUE
 );
 
+INSERT INTO roles(name, description) 
+	VALUES 
+	('admin', 'can do anything'),
+	('Regular user', 'can only get info from api')
+);
+
 
 -- +goose Down
 

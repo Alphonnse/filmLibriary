@@ -44,6 +44,8 @@ func (r *repository) RmActorInfo(ctx context.Context, id uuid.UUID) error {
 }
 
 
+
+
 func (r *repository) AddUser(ctx context.Context, arg generated.AddUserParams) (*model.UserModel, error) {
 	resp, err := r.db.AddUser(ctx, arg)
 	if err != nil {
@@ -59,3 +61,13 @@ func (r *repository) GetUserByID(ctx context.Context, arg uuid.UUID) (*model.Use
 	}
 	return convertor.FromDatabaseUserToUser(&user), nil
 }
+
+func (r *repository) GetUser(ctx context.Context, arg string) (*model.UserModel, error) {
+	user, err := r.db.GetUser(ctx, arg)
+	if err != nil {
+		return nil, err
+	}
+	return convertor.FromDatabaseUserToUser(&user), nil
+}
+
+

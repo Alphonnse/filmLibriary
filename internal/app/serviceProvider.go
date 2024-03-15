@@ -74,10 +74,21 @@ func (s *serviceProvider) Repository() repository.Respository {
 	return s.repository
 }
 
+func (s *serviceProvider) AuthService() authjwt.AuthService {
+	if s.authService == nil {
+		s.authService = userauth.NewAuthService(
+			s.userService,
+			s.jwtConfig,
+		)
+	}
+	return s.authService
+}
+
 func (s *serviceProvider) UserService() service.ServiceUserShape {
 	if s.userService == nil {
 		s.userService = userService.NewServiceUser(
 			s.Repository(),
+			s.AuthService(),
 		)
 	}
 	return s.userService
@@ -90,16 +101,6 @@ func (s *serviceProvider) LibriaryService() service.ServiceLibriaryShape {
 		)
 	}
 	return s.libriaryService
-}
-
-func (s *serviceProvider) AuthService() authjwt.AuthService {
-	if s.authService == nil {
-		s.authService = userauth.NewAuthService(
-			s.userService,
-			s.jwtConfig,
-		)
-	}
-	return s.authService
 }
 
 func (s *serviceProvider) LibriaryImpl() filmlibriary.ImplementationLibriary {
