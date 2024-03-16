@@ -35,6 +35,6 @@ func (i *ImplementationLibriary) RmActorInfo(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	api.RespondWithJSON(w, 201, fmt.Sprintf("Actor with UUID %s removed", actorID))
+	api.RespondWithJSON(w, 200, fmt.Sprintf("Actor with UUID %s removed", actorID))
 	log.Printf("Actor with UUID %s removed", actorID)
 }

@@ -58,8 +58,19 @@ func FromApiChangeFilmInfoToService(info *model.ChangeFilmInfoRequest) *model.Fi
 		ReleaseDate: info.ReleaseDate,
 		Rate:        info.Rate,
 		Actors:      acts,
-		// Actors:      info.Actors,
-		// Actors: 	FromApiChangeActorInfoToService(&info.Actors),
-		// Actors:      info.Actors,
+	}
+}
+
+func FromApiGetFilmsListToService(info *model.GetFilmsListRequest) *model.GetFilmsListService {
+	return &model.GetFilmsListService{
+		SortBy: info.SortBy,
+		Order:  info.Order,
+	}
+}
+
+func FromApiGetFilmsListByFragmentToService(info *model.GetFilmsListByFragmentRequest) *model.GetFilmsListByFragmentService {
+	return &model.GetFilmsListByFragmentService{
+		FragmentOf: info.FragmentOf,
+		Fragment:   info.Fragment,
 	}
 }

@@ -11,13 +11,13 @@ import (
 	"github.com/Alphonnse/filmLibriary/internal/model"
 )
 
-func (i *ImplementationLibriary) GetFilmsList(w http.ResponseWriter, r *http.Request) {
+func (i *ImplementationLibriary) GetFilmsListByFragment(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		api.RespondWithError(w, 400, fmt.Sprintf("Wrong method: %s", r.Method))
 		return
 	}
 
-	params := model.GetFilmsListRequest{}
+	params := model.GetFilmsListByFragmentRequest{}
 
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&params)
@@ -27,13 +27,13 @@ func (i *ImplementationLibriary) GetFilmsList(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	if validErrs := ValidateGetFilmsList(&params); len(validErrs) > 0 {
+	if validErrs := ValidateGetFilmsListByFragment(&params); len(validErrs) > 0 {
 		log.Printf("Invalid JSON: %v", validErrs)
 		api.RespondWithError(w, 400, fmt.Sprintf("Invalid JSON: %v", validErrs))
 		return
 	}
 
-	sortedFilmsList, err := i.libriaryService.GetFilmsList(r.Context(), convertor.FromApiGetFilmsListToService(&params))
+	sortedFilmsList, err := i.libriaryService.GetFilmsListByFragment(r.Context(), convertor.FromApiGetFilmsListByFragmentToService(&params))
 	if err != nil {
 		log.Printf("Error returning sorted films list: %v\n", err)
 		api.RespondWithError(w, 400, fmt.Sprintf("Couldn't return sorted films list: %v", err))

@@ -23,7 +23,7 @@ type AddFilmInfoParams struct {
 	ID          uuid.UUID
 	Title       string
 	Description sql.NullString
-	Releasedate sql.NullString
+	Releasedate sql.NullTime
 	Rate        sql.NullInt32
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
@@ -67,7 +67,7 @@ type ChangeFilmInfoParams struct {
 	ID          uuid.UUID
 	Title       string
 	Description sql.NullString
-	Releasedate sql.NullString
+	Releasedate sql.NullTime
 	Rate        sql.NullInt32
 	UpdatedAt   time.Time
 }
@@ -138,6 +138,255 @@ func (q *Queries) GetFilmByID(ctx context.Context, id uuid.UUID) (Film, error) {
 		&i.UpdatedAt,
 	)
 	return i, err
+}
+
+const getFilmsByActorNameFragment = `-- name: GetFilmsByActorNameFragment :many
+SELECT DISTINCT f.id, f.title, f.description, f.releasedate, f.rate, f.created_at, f.updated_at
+FROM films f
+JOIN actors_films af ON f.id = af.film_id
+JOIN actors a ON af.actor_id = a.id
+WHERE a.name LIKE $1
+`
+
+func (q *Queries) GetFilmsByActorNameFragment(ctx context.Context, name string) ([]Film, error) {
+	rows, err := q.db.QueryContext(ctx, getFilmsByActorNameFragment, name)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Film
+	for rows.Next() {
+		var i Film
+		if err := rows.Scan(
+			&i.ID,
+			&i.Title,
+			&i.Description,
+			&i.Releasedate,
+			&i.Rate,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getFilmsSortedByOrderedByRateAsc = `-- name: GetFilmsSortedByOrderedByRateAsc :many
+SELECT id, title, description, releasedate, rate, created_at, updated_at FROM films ORDER BY rate ASC
+`
+
+func (q *Queries) GetFilmsSortedByOrderedByRateAsc(ctx context.Context) ([]Film, error) {
+	rows, err := q.db.QueryContext(ctx, getFilmsSortedByOrderedByRateAsc)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Film
+	for rows.Next() {
+		var i Film
+		if err := rows.Scan(
+			&i.ID,
+			&i.Title,
+			&i.Description,
+			&i.Releasedate,
+			&i.Rate,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getFilmsSortedByOrderedByRateDesc = `-- name: GetFilmsSortedByOrderedByRateDesc :many
+SELECT id, title, description, releasedate, rate, created_at, updated_at FROM films ORDER BY rate DESC
+`
+
+func (q *Queries) GetFilmsSortedByOrderedByRateDesc(ctx context.Context) ([]Film, error) {
+	rows, err := q.db.QueryContext(ctx, getFilmsSortedByOrderedByRateDesc)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Film
+	for rows.Next() {
+		var i Film
+		if err := rows.Scan(
+			&i.ID,
+			&i.Title,
+			&i.Description,
+			&i.Releasedate,
+			&i.Rate,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getFilmsSortedByOrderedByReleaseDateAsc = `-- name: GetFilmsSortedByOrderedByReleaseDateAsc :many
+SELECT id, title, description, releasedate, rate, created_at, updated_at FROM films ORDER BY releaseDate ASC
+`
+
+func (q *Queries) GetFilmsSortedByOrderedByReleaseDateAsc(ctx context.Context) ([]Film, error) {
+	rows, err := q.db.QueryContext(ctx, getFilmsSortedByOrderedByReleaseDateAsc)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Film
+	for rows.Next() {
+		var i Film
+		if err := rows.Scan(
+			&i.ID,
+			&i.Title,
+			&i.Description,
+			&i.Releasedate,
+			&i.Rate,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getFilmsSortedByOrderedByReleaseDateDesc = `-- name: GetFilmsSortedByOrderedByReleaseDateDesc :many
+SELECT id, title, description, releasedate, rate, created_at, updated_at FROM films ORDER BY releaseDate DESC
+`
+
+func (q *Queries) GetFilmsSortedByOrderedByReleaseDateDesc(ctx context.Context) ([]Film, error) {
+	rows, err := q.db.QueryContext(ctx, getFilmsSortedByOrderedByReleaseDateDesc)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Film
+	for rows.Next() {
+		var i Film
+		if err := rows.Scan(
+			&i.ID,
+			&i.Title,
+			&i.Description,
+			&i.Releasedate,
+			&i.Rate,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getFilmsSortedByOrderedByTitleAsc = `-- name: GetFilmsSortedByOrderedByTitleAsc :many
+SELECT id, title, description, releasedate, rate, created_at, updated_at FROM films ORDER BY title ASC
+`
+
+func (q *Queries) GetFilmsSortedByOrderedByTitleAsc(ctx context.Context) ([]Film, error) {
+	rows, err := q.db.QueryContext(ctx, getFilmsSortedByOrderedByTitleAsc)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Film
+	for rows.Next() {
+		var i Film
+		if err := rows.Scan(
+			&i.ID,
+			&i.Title,
+			&i.Description,
+			&i.Releasedate,
+			&i.Rate,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getFilmsSortedByOrderedByTitleDesc = `-- name: GetFilmsSortedByOrderedByTitleDesc :many
+SELECT id, title, description, releasedate, rate, created_at, updated_at FROM films ORDER BY title DESC
+`
+
+func (q *Queries) GetFilmsSortedByOrderedByTitleDesc(ctx context.Context) ([]Film, error) {
+	rows, err := q.db.QueryContext(ctx, getFilmsSortedByOrderedByTitleDesc)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Film
+	for rows.Next() {
+		var i Film
+		if err := rows.Scan(
+			&i.ID,
+			&i.Title,
+			&i.Description,
+			&i.Releasedate,
+			&i.Rate,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const insertIntoActorToFilme = `-- name: InsertIntoActorToFilme :exec

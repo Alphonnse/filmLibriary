@@ -11,11 +11,12 @@ import (
 )
 
 func (s *serviceLibriary) AddActorInfo(ctx context.Context, info *model.ActorModel) (*model.ActorModel, error) {
+	bdy, _ := time.Parse("2006-01-02", info.Birthday)
 	response, err := s.libriaryRepository.AddActorInfo(ctx, generated.AddActorInfoParams{
 		ID:        uuid.New(),
 		Name:      info.Name,
 		Sex:       info.Sex,
-		Birthday:  info.Birthday,
+		Birthday:  bdy,
 		Otherinfo: sql.NullString{String: info.OtherInfo, Valid: true},
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),

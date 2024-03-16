@@ -96,9 +96,12 @@ func (a *App) setupRoutes() {
 	a.mux.HandleFunc("/actor/addActorInfo", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.AddActorInfo))
 	a.mux.HandleFunc("/actor/changeActorInfo", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.ChangeActorInfo))
 	a.mux.HandleFunc("/actor/remove/", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.RmActorInfo))
+	a.mux.HandleFunc("/actor/letList", a.serviceProvider.authService.JWTRegularUserAuth(a.serviceProvider.libriaryImpl.GetActorsInfoListWithFilms))
 	a.mux.HandleFunc("/film/addFilmInfo", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.AddFilmInfo))
 	a.mux.HandleFunc("/film/changeFilmInfo", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.ChangeFilmInfo))
 	a.mux.HandleFunc("/film/remove/", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.RmFilmInfo))
+	a.mux.HandleFunc("/film/getList", a.serviceProvider.authService.JWTRegularUserAuth(a.serviceProvider.libriaryImpl.GetFilmsList))
+	a.mux.HandleFunc("/film/findFilm", a.serviceProvider.authService.JWTRegularUserAuth(a.serviceProvider.libriaryImpl.GetFilmsListByFragment))
 	a.mux.HandleFunc("/register", a.serviceProvider.userImpl.AddUser)
 	a.mux.HandleFunc("/login", a.serviceProvider.userImpl.GetUser)
 }

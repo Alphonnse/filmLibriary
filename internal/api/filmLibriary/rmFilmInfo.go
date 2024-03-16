@@ -35,6 +35,6 @@ func (i *ImplementationLibriary) RmFilmInfo(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	api.RespondWithJSON(w, 201, fmt.Sprintf("Actor with UUID %s removed", filmID))
-	log.Printf("Actor with UUID %s removed", filmID)
+	api.RespondWithJSON(w, 200, fmt.Sprintf("Actor with UUID %s removed", filmID))
+	log.Printf("Film with UUID %s removed", filmID)
 }

@@ -32,5 +32,9 @@ type ChangeActorInfoRequest struct {
 }
 
 type RmActorInfoRequest struct {
-	UUID      uuid.UUID `json:"uuid"`
+	UUID uuid.UUID `json:"uuid"`
+}
+
+type GetActorsAndTeirFilmsService struct {
+	List map[string][]string `json:"actorsList"`
 }

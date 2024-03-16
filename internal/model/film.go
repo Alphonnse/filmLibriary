@@ -18,14 +18,14 @@ type FilmModel struct {
 }
 
 type FilmModelResponse struct {
-	UUID        uuid.UUID    `json:"uuid"`
-	Title       string       `json:"title"`
-	Description string       `json:"description"`
-	ReleaseDate string       `json:"releaseDate"`
-	Rate        int          `json:"rate"`
+	UUID        uuid.UUID     `json:"uuid"`
+	Title       string        `json:"title"`
+	Description string        `json:"description"`
+	ReleaseDate string        `json:"releaseDate"`
+	Rate        int           `json:"rate"`
 	Actors      []*ActorModel `json:"actors"`
-	Created_at  time.Time    `json:"created_at"`
-	Updated_at  time.Time    `json:"updated_at"`
+	Created_at  time.Time     `json:"created_at"`
+	Updated_at  time.Time     `json:"updated_at"`
 }
 
 type AddFilmInfoRequest struct {
@@ -43,4 +43,34 @@ type ChangeFilmInfoRequest struct {
 	ReleaseDate string                   `json:"releaseDate"`
 	Rate        int                      `json:"rate"`
 	Actors      []ChangeActorInfoRequest `json:"actors"`
+}
+
+type GetFilmsListRequest struct {
+	SortBy string `json:"sortBy"`
+	Order  string `json:"order"`
+}
+
+type GetFilmsListService struct {
+	SortBy string `json:"sortBy"`
+	Order  string `json:"order"`
+}
+
+type FilmsListModel struct {
+	UUID        uuid.UUID `json:"uuid"`
+	Title       string    `json:"title"`
+	Description string    `json:"description"`
+	ReleaseDate string    `json:"releaseDate"`
+	Rate        int       `json:"rate"`
+	Created_at  time.Time `json:"created_at"`
+	Updated_at  time.Time `json:"updated_at"`
+}
+
+type GetFilmsListByFragmentRequest struct {
+	FragmentOf string `json:"fragmentOf"`
+	Fragment   string `json:"fragment"`
+}
+
+type GetFilmsListByFragmentService struct {
+	FragmentOf string `json:"fragmentOf"`
+	Fragment   string `json:"fragment"`
 }

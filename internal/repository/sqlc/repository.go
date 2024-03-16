@@ -50,6 +50,23 @@ func (r *repository) GetActorByID(ctx context.Context, id uuid.UUID) (*model.Act
 	}
 	return convertor.FromDatabaseActorToActor(&resp), nil
 }
+func (r *repository) GetActorsListWithFilms(ctx context.Context) (*model.GetActorsAndTeirFilmsService, error) {
+	resp, err := r.db.GetActorsListWithFilms(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return convertor.FromDatabseGetActorsListWithFilmsToService(resp), nil
+}
+
+func (r *repository) GetFilmsByActorNameFragment(ctx context.Context, actorNameFragment string) ([]model.FilmsListModel, error) {
+	resp, err := r.db.GetFilmsByActorNameFragment(ctx, "%"+actorNameFragment+"%")
+	if err != nil {
+		return nil, err
+	}
+
+	return convertor.FromDatabaseFilmsListToFilmsList(resp), nil
+}
 
 func (r *repository) AddFilmInfo(ctx context.Context, arg generated.AddFilmInfoParams) (*model.FilmModelResponse, error) {
 	resp, err := r.db.AddFilmInfo(ctx, arg)
@@ -83,15 +100,62 @@ func (r *repository) RmFilmInfo(ctx context.Context, id uuid.UUID) error {
 	return r.db.RmFilmInfo(ctx, id)
 }
 
-// func (r *repository) GetActorsByFilmId(ctx context.Context, filmID uuid.UUID) ([]generated.ActorsFilm, error) {
-// 	resp, err := r.db.GetActorsByFilmId(ctx, filmID)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-//
-// 	// mb TODO
-// 	return resp, nil
-// }
+func (r *repository) GetFilmsSortedByOrderedByRateAsc(ctx context.Context) ([]model.FilmsListModel, error) {
+	resp, err := r.db.GetFilmsSortedByOrderedByRateAsc(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return convertor.FromDatabaseFilmsListToFilmsList(resp), nil
+}
+
+func (r *repository) GetFilmsSortedByOrderedByRateDesc(ctx context.Context) ([]model.FilmsListModel, error) {
+	resp, err := r.db.GetFilmsSortedByOrderedByRateDesc(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return convertor.FromDatabaseFilmsListToFilmsList(resp), nil
+}
+
+func (r *repository) GetFilmsSortedByOrderedByTitleAsc(ctx context.Context) ([]model.FilmsListModel, error) {
+	resp, err := r.db.GetFilmsSortedByOrderedByTitleAsc(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return convertor.FromDatabaseFilmsListToFilmsList(resp), nil
+}
+
+func (r *repository) GetFilmsSortedByOrderedByTitleDesc(ctx context.Context) ([]model.FilmsListModel, error) {
+	resp, err := r.db.GetFilmsSortedByOrderedByTitleDesc(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return convertor.FromDatabaseFilmsListToFilmsList(resp), nil
+}
+
+func (r *repository) GetFilmsSortedByOrderedByReleaseDateAsc(ctx context.Context) ([]model.FilmsListModel, error) {
+	resp, err := r.db.GetFilmsSortedByOrderedByReleaseDateAsc(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return convertor.FromDatabaseFilmsListToFilmsList(resp), nil
+}
+
+func (r *repository) GetFilmsSortedByOrderedByReleaseDateDesc(ctx context.Context) ([]model.FilmsListModel, error) {
+	resp, err := r.db.GetFilmsSortedByOrderedByReleaseDateDesc(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return convertor.FromDatabaseFilmsListToFilmsList(resp), nil
+}
+
+func (r *repository) GetFilmsListByTitleFragment(ctx context.Context, fragmentToSearch string) ([]model.FilmsListModel, error) {
+	resp, err := r.db.GetFilmsSortedByOrderedByRateDesc(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return convertor.FromDatabaseFilmsListByFragmentToFilmsList(resp, fragmentToSearch), nil
+}
 
 func (r *repository) AddUser(ctx context.Context, arg generated.AddUserParams) (*model.UserModel, error) {
 	resp, err := r.db.AddUser(ctx, arg)
@@ -116,4 +180,3 @@ func (r *repository) GetUser(ctx context.Context, arg string) (*model.UserModel,
 	}
 	return convertor.FromDatabaseUserToUser(&user), nil
 }
-

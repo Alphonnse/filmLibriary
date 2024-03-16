@@ -15,7 +15,7 @@ type Actor struct {
 	ID        uuid.UUID
 	Name      string
 	Sex       string
-	Birthday  string
+	Birthday  time.Time
 	Otherinfo sql.NullString
 	CreatedAt time.Time
 	UpdatedAt time.Time
@@ -30,7 +30,7 @@ type Film struct {
 	ID          uuid.UUID
 	Title       string
 	Description sql.NullString
-	Releasedate sql.NullString
+	Releasedate sql.NullTime
 	Rate        sql.NullInt32
 	CreatedAt   time.Time
 	UpdatedAt   time.Time

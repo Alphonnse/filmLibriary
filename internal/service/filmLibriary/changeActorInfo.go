@@ -13,11 +13,12 @@ func (s *serviceLibriary) ChangeActorInfo(ctx context.Context, model *model.Acto
 	prevActorInfo, err := s.libriaryRepository.GetActorByID(ctx, model.UUID)
 	model = defineActorFieldsToChange(model, prevActorInfo)
 
+	bdy, _ := time.Parse("2006-01-02", model.Birthday)
 	changedActorInfo, err := s.libriaryRepository.ChangeActorInfo(ctx, generated.ChangeActorInfoParams{
 		ID:        model.UUID,
 		Name:      model.Name,
 		Sex:       model.Sex,
-		Birthday:  model.Birthday,
+		Birthday:  bdy,
 		Otherinfo: sql.NullString{String: model.OtherInfo, Valid: true},
 		UpdatedAt: time.Now().UTC(),
 	})

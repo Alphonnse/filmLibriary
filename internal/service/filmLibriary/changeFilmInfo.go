@@ -13,11 +13,15 @@ func (s *serviceLibriary) ChangeFilmInfo(ctx context.Context, model *model.FilmM
 	prevFilmInfo, err := s.libriaryRepository.GetFilmByID(ctx, model.UUID)
 	model = defineFilmFieldsToChange(model, prevFilmInfo)
 
+	relDate, err := time.Parse("2006-01-02", model.ReleaseDate)
+	if err != nil {
+		return nil, err
+	}
 	changedFilmInfo, err := s.libriaryRepository.ChangeFilmInfo(ctx, generated.ChangeFilmInfoParams{
 		ID:          model.UUID,
 		Title:       model.Title,
 		Description: sql.NullString{String: model.Description, Valid: true},
-		Releasedate: sql.NullString{String: model.ReleaseDate, Valid: true},
+		Releasedate: sql.NullTime{Time: relDate, Valid: true},
 		Rate:        sql.NullInt32{Int32: int32(model.Rate), Valid: true},
 		UpdatedAt:   time.Now().UTC(),
 	})

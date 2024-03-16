@@ -25,3 +25,28 @@ SELECT * FROM actors_films WHERE film_id = $1;
 
 -- name: RmFilmInfo :exec
 DELETE FROM films WHERE id = $1;
+
+-- name: GetFilmsSortedByOrderedByTitleDesc :many
+SELECT * FROM films ORDER BY title DESC;
+
+-- name: GetFilmsSortedByOrderedByTitleAsc :many
+SELECT * FROM films ORDER BY title ASC;
+
+-- name: GetFilmsSortedByOrderedByReleaseDateDesc :many
+SELECT * FROM films ORDER BY releaseDate DESC;
+
+-- name: GetFilmsSortedByOrderedByReleaseDateAsc :many
+SELECT * FROM films ORDER BY releaseDate ASC;
+
+-- name: GetFilmsSortedByOrderedByRateDesc :many
+SELECT * FROM films ORDER BY rate DESC;
+
+-- name: GetFilmsSortedByOrderedByRateAsc :many
+SELECT * FROM films ORDER BY rate ASC;
+
+-- name: GetFilmsByActorNameFragment :many
+SELECT DISTINCT f.*
+FROM films f
+JOIN actors_films af ON f.id = af.film_id
+JOIN actors a ON af.actor_id = a.id
+WHERE a.name LIKE $1;

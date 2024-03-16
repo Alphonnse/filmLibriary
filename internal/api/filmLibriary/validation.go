@@ -35,7 +35,7 @@ func ValidateAddFilmInfoRequest(model *model.AddFilmInfoRequest) url.Values {
 		errs.Add("title", "should be length of 1;150")
 	}
 	if len(model.Description) < 1 || len(model.Description) > 1000 {
-		errs.Add("description", "too long")
+		errs.Add("description", "is not proper long")
 	}
 	if model.Rate < 0 || model.Rate > 10 {
 		errs.Add("rate", "should be in range 1;10")
@@ -67,7 +67,7 @@ func ValidateChangeFilmInfoRequest(model *model.ChangeFilmInfoRequest) url.Value
 		errs.Add("title", "should be length of 1;150")
 	}
 	if len(model.Description) < 1 || len(model.Description) > 1000 {
-		errs.Add("description", "too is not proper long")
+		errs.Add("description", "is not proper long")
 	}
 	if model.Rate < 0 || model.Rate > 10 {
 		errs.Add("rate", "should be in range 1;10")
@@ -79,6 +79,30 @@ func ValidateChangeFilmInfoRequest(model *model.ChangeFilmInfoRequest) url.Value
 				errs.Add("actors["+strconv.Itoa(i)+"]["+field+"]", err[0])
 			}
 		}
+	}
+	return errs
+}
+
+
+func ValidateGetFilmsList(model *model.GetFilmsListRequest) url.Values {
+	errs := url.Values{}
+	if model.SortBy != ""  && model.SortBy != "title" && model.SortBy != "rate" && model.SortBy != "releaseDate"{
+		errs.Add("sortredBy", "Should be blank || title || rate || releaseDate")
+	}
+	if model.Order != "" && model.Order != "descending" && model.Order != "ascending" {
+		errs.Add("order", "Should be blank || descending || ascending")
+	}
+	return errs
+}
+
+
+func ValidateGetFilmsListByFragment(model *model.GetFilmsListByFragmentRequest) url.Values {
+	errs := url.Values{}
+	if model.FragmentOf != "" && model.FragmentOf != "film title" && model.FragmentOf != "actor name" {
+		errs.Add("fragmentOf", "Should be blank || film title || actor name ")
+	}
+	if model.Fragment == "" {
+		errs.Add("fragment", "the field is required")
 	}
 	return errs
 }
