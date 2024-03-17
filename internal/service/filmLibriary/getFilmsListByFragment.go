@@ -10,7 +10,7 @@ func (s *serviceLibriary) GetFilmsListByFragment(ctx context.Context, info *mode
 	var filmsList []model.FilmsListModel
 	var err error
 
-	if info.FragmentOf == "actor name" {
+	if info.FragmentOf == "actor_name" {
 		filmsList, err = s.libriaryRepository.GetFilmsByActorNameFragment(ctx, info.Fragment)
 	} else {
 		filmsList, err = s.libriaryRepository.GetFilmsListByTitleFragment(ctx, info.Fragment)

@@ -45,11 +45,6 @@ type ChangeFilmInfoRequest struct {
 	Actors      []ChangeActorInfoRequest `json:"actors"`
 }
 
-type GetFilmsListRequest struct {
-	SortBy string `json:"sortBy"`
-	Order  string `json:"order"`
-}
-
 type GetFilmsListService struct {
 	SortBy string `json:"sortBy"`
 	Order  string `json:"order"`
@@ -63,11 +58,6 @@ type FilmsListModel struct {
 	Rate        int       `json:"rate"`
 	Created_at  time.Time `json:"created_at"`
 	Updated_at  time.Time `json:"updated_at"`
-}
-
-type GetFilmsListByFragmentRequest struct {
-	FragmentOf string `json:"fragmentOf"`
-	Fragment   string `json:"fragment"`
 }
 
 type GetFilmsListByFragmentService struct {

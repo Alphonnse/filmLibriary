@@ -48,7 +48,7 @@ func (i *ImplementationUser) AddUser(w http.ResponseWriter, r *http.Request) {
 	addUserInfo, err := i.UserService.AddUser(r.Context(), convertor.FromApiAddUserService(&params))
 	if err != nil {
 		log.Printf("Error registering user: %v\n", err)
-		api.RespondWithError(w, 500, fmt.Sprintf("Couldn't registering user : %v", err))
+		api.RespondWithError(w, 401, fmt.Sprintf("Couldn't registering user : %v", err))
 		return
 	}
 

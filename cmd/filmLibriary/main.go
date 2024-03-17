@@ -8,14 +8,6 @@ import (
 )
 
 
-// @title Film Libriary RestAPI app
-// @version 1.0
-// @description Its the Film Libtiary app that uses pSQL, JWT netHttp lib
-
-// @host localhost:8080
-// @BasePath /
-
-
 func main() {
 	ctx := context.Background()
 

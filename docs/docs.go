@@ -268,26 +268,12 @@ const docTemplate = `{
                         "JWTRegularUserAuth": []
                     }
                 ],
-                "description": "Retrieve a list of films based on a search fragment",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Retrieve a list of films based on a search fragment. It should look like /film/findFilm/{fragmentOf}/{fragment}",
                 "produces": [
                     "application/json"
                 ],
                 "summary": "Get list of films by fragment",
                 "operationId": "getFilmsListByFragment",
-                "parameters": [
-                    {
-                        "description": "Search fragment for films",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.GetFilmsListByFragmentRequest"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "List of films matching the search fragment",
@@ -314,26 +300,12 @@ const docTemplate = `{
                         "JWTRegularUserAuth": []
                     }
                 ],
-                "description": "Retrieve a list of films based on specified criteria",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Retrieve a list of films based on specified criteria. It should look like /film/getList/{sortBy}|none|/{orderBy}|none|",
                 "produces": [
                     "application/json"
                 ],
                 "summary": "Get list of films",
                 "operationId": "getFilmsList",
-                "parameters": [
-                    {
-                        "description": "Criteria for retrieving films list",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.GetFilmsListRequest"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "List of films based on criteria",
@@ -673,28 +645,6 @@ const docTemplate = `{
                 }
             }
         },
-        "model.GetFilmsListByFragmentRequest": {
-            "type": "object",
-            "properties": {
-                "fragment": {
-                    "type": "string"
-                },
-                "fragmentOf": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.GetFilmsListRequest": {
-            "type": "object",
-            "properties": {
-                "order": {
-                    "type": "string"
-                },
-                "sortBy": {
-                    "type": "string"
-                }
-            }
-        },
         "model.Login": {
             "type": "object",
             "properties": {
@@ -737,7 +687,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
+	Host:             "localhost:8000",
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "Film Libriary RestAPI app",

@@ -6,7 +6,7 @@
         "contact": {},
         "version": "1.0"
     },
-    "host": "localhost:8080",
+    "host": "localhost:8000",
     "basePath": "/",
     "paths": {
         "/actor/addActorInfo": {
@@ -262,26 +262,12 @@
                         "JWTRegularUserAuth": []
                     }
                 ],
-                "description": "Retrieve a list of films based on a search fragment",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Retrieve a list of films based on a search fragment. It should look like /film/findFilm/{fragmentOf}/{fragment}",
                 "produces": [
                     "application/json"
                 ],
                 "summary": "Get list of films by fragment",
                 "operationId": "getFilmsListByFragment",
-                "parameters": [
-                    {
-                        "description": "Search fragment for films",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.GetFilmsListByFragmentRequest"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "List of films matching the search fragment",
@@ -308,26 +294,12 @@
                         "JWTRegularUserAuth": []
                     }
                 ],
-                "description": "Retrieve a list of films based on specified criteria",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Retrieve a list of films based on specified criteria. It should look like /film/getList/{sortBy}|none|/{orderBy}|none|",
                 "produces": [
                     "application/json"
                 ],
                 "summary": "Get list of films",
                 "operationId": "getFilmsList",
-                "parameters": [
-                    {
-                        "description": "Criteria for retrieving films list",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.GetFilmsListRequest"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "List of films based on criteria",
@@ -664,28 +636,6 @@
                             "type": "string"
                         }
                     }
-                }
-            }
-        },
-        "model.GetFilmsListByFragmentRequest": {
-            "type": "object",
-            "properties": {
-                "fragment": {
-                    "type": "string"
-                },
-                "fragmentOf": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.GetFilmsListRequest": {
-            "type": "object",
-            "properties": {
-                "order": {
-                    "type": "string"
-                },
-                "sortBy": {
-                    "type": "string"
                 }
             }
         },

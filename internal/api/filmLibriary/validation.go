@@ -3,6 +3,7 @@ package filmlibriary
 import (
 	"net/url"
 	"strconv"
+	"strings"
 
 	"github.com/Alphonnse/filmLibriary/internal/model"
 )
@@ -83,26 +84,48 @@ func ValidateChangeFilmInfoRequest(model *model.ChangeFilmInfoRequest) url.Value
 	return errs
 }
 
-
-func ValidateGetFilmsList(model *model.GetFilmsListRequest) url.Values {
+func ValidateGetFilmsList(urlReq *url.URL) (url.Values, string, string) {
 	errs := url.Values{}
-	if model.SortBy != ""  && model.SortBy != "title" && model.SortBy != "rate" && model.SortBy != "releaseDate"{
-		errs.Add("sortredBy", "Should be blank || title || rate || releaseDate")
+	var sortBy string
+	var order string
+	UrlParts := strings.Split(urlReq.String(), "/")
+	if len(UrlParts) > 5 {
+		errs.Add("malformed url", "too long. It should look like /film/getList/{sortBy}/{orderBy}")
 	}
-	if model.Order != "" && model.Order != "descending" && model.Order != "ascending" {
-		errs.Add("order", "Should be blank || descending || ascending")
+	if len(UrlParts) > 3 {
+		sortBy = UrlParts[3]
+		if sortBy != "" && sortBy != "title" && sortBy != "rate" && sortBy != "releaseDate" {
+			errs.Add("sortredBy", "Should be blak || title || rate || releaseDate")
+		}
 	}
-	return errs
+	if len(UrlParts) == 5 {
+		order = UrlParts[4]
+		if order != "" && order != "descending" && order != "ascending" {
+			errs.Add("order", "Should be blank || descending || ascending")
+		}
+	}
+	return errs, sortBy, order
 }
 
-
-func ValidateGetFilmsListByFragment(model *model.GetFilmsListByFragmentRequest) url.Values {
+func ValidateGetFilmsListByFragment(urlReq *url.URL) (url.Values, string, string) {
 	errs := url.Values{}
-	if model.FragmentOf != "" && model.FragmentOf != "film title" && model.FragmentOf != "actor name" {
-		errs.Add("fragmentOf", "Should be blank || film title || actor name ")
+	var fragmentOf string
+	var fragment string
+	UrlParts := strings.Split(urlReq.String(), "/")
+	if len(UrlParts) > 5 {
+		errs.Add("malformed url", "too long. It should look like /film/findFilm/{fragmentOf}/{fragment}")
 	}
-	if model.Fragment == "" {
-		errs.Add("fragment", "the field is required")
+	if len(UrlParts) > 3 {
+		fragmentOf = UrlParts[3]
+		if fragmentOf != "film_title" && fragmentOf != "actor_name" {
+			errs.Add("fragmentOf", "Should be film_title || actor_name ")
+		}
 	}
-	return errs
+	if len(UrlParts) == 5 {
+		fragment = UrlParts[4]
+		if fragment == "" {
+			errs.Add("fragment", "the url part is required")
+		}
+	}
+	return errs, fragmentOf, fragment
 }

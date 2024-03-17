@@ -14,7 +14,7 @@ import (
 // @version 1.0
 // @description Its the Film Libtiary app that uses pSQL, JWT netHttp lib
 
-// @host localhost:8080
+// @host localhost:8000
 // @BasePath /
 
 type App struct {
@@ -110,8 +110,8 @@ func (a *App) setupRoutes() {
 	a.mux.HandleFunc("/film/addFilmInfo", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.AddFilmInfo))
 	a.mux.HandleFunc("/film/changeFilmInfo", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.ChangeFilmInfo))
 	a.mux.HandleFunc("/film/remove/", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.RmFilmInfo))
-	a.mux.HandleFunc("/film/getList", a.serviceProvider.authService.JWTRegularUserAuth(a.serviceProvider.libriaryImpl.GetFilmsList))
-	a.mux.HandleFunc("/film/findFilm", a.serviceProvider.authService.JWTRegularUserAuth(a.serviceProvider.libriaryImpl.GetFilmsListByFragment))
+	a.mux.HandleFunc("/film/getList/", a.serviceProvider.authService.JWTRegularUserAuth(a.serviceProvider.libriaryImpl.GetFilmsList))
+	a.mux.HandleFunc("/film/findFilm/", a.serviceProvider.authService.JWTRegularUserAuth(a.serviceProvider.libriaryImpl.GetFilmsListByFragment))
 	a.mux.HandleFunc("/register", a.serviceProvider.userImpl.AddUser)
 	a.mux.HandleFunc("/login", a.serviceProvider.userImpl.GetUser)
 	a.mux.HandleFunc("/test/{some_shit}", a.serviceProvider.userImpl.Test)

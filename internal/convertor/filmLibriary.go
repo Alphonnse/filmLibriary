@@ -61,16 +61,16 @@ func FromApiChangeFilmInfoToService(info *model.ChangeFilmInfoRequest) *model.Fi
 	}
 }
 
-func FromApiGetFilmsListToService(info *model.GetFilmsListRequest) *model.GetFilmsListService {
+func FromApiGetFilmsListToService(sortBy, orderBy string) *model.GetFilmsListService {
 	return &model.GetFilmsListService{
-		SortBy: info.SortBy,
-		Order:  info.Order,
+		SortBy: sortBy,
+		Order:  orderBy,
 	}
 }
 
-func FromApiGetFilmsListByFragmentToService(info *model.GetFilmsListByFragmentRequest) *model.GetFilmsListByFragmentService {
+func FromApiGetFilmsListByFragmentToService(fragmentOf, fragment string) *model.GetFilmsListByFragmentService {
 	return &model.GetFilmsListByFragmentService{
-		FragmentOf: info.FragmentOf,
-		Fragment:   info.Fragment,
+		FragmentOf: fragmentOf,
+		Fragment:   fragment,
 	}
 }
