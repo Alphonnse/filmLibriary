@@ -11,6 +11,16 @@ import (
 	"github.com/Alphonnse/filmLibriary/internal/model"
 )
 
+// @Summary Add film information
+// @Description Add information about a new film
+// @ID addFilmInfo
+// @Accept json
+// @Produce json
+// @Param body body model.AddFilmInfoRequest true "Film information to add"
+// @Security JWTAdminAuth
+// @Success 201 {object} model.FilmModelResponse "Film information added successfully"
+// @Failure 400 {object} model.ErrResponse "Invalid JSON or missing fields"
+// @Router /film/addFilmInfo [post]
 func (i *ImplementationLibriary) AddFilmInfo(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != http.MethodPost {

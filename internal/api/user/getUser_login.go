@@ -11,6 +11,18 @@ import (
 	"github.com/Alphonnse/filmLibriary/internal/model"
 )
 
+//login
+
+// @Summary Login as a user
+// @Description Log in with user credentials to get access token
+// @ID loginUser
+// @Accept json
+// @Produce json
+// @Param body body model.Login true "User login credentials"
+// @Success 201 {object} model.UserRequestModel "User logged in successfully"
+// @Failure 400 {object} model.ErrResponse "Invalid JSON or missing fields"
+// @Failure 500 {object} model.ErrResponse "Failed to log in user"
+// @Router /login [post]
 func (i *ImplementationUser) GetUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		api.RespondWithError(w, 400, fmt.Sprintf("Wrong method: %s", r.Method))

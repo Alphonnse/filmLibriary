@@ -11,6 +11,15 @@ import (
 	"github.com/google/uuid"
 )
 
+// @Summary Remove actor information
+// @Description Remove information about a specific actor by UUID
+// @ID rmActorInfo
+// @Produce json
+// @Param actorID path string true "UUID of the actor to remove"
+// @Security JWTAdminAuth
+// @Success 200 {string} string "Actor information removed successfully"
+// @Failure 400 {object} model.ErrResponse "Invalid JSON or missing fields"
+// @Router /actor/remove/{actorID} [delete]
 func (i *ImplementationLibriary) RmActorInfo(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != http.MethodDelete {

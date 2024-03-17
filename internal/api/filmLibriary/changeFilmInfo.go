@@ -11,6 +11,16 @@ import (
 	"github.com/Alphonnse/filmLibriary/internal/model"
 )
 
+// @Summary Change film information
+// @Description Update information about an existing film
+// @ID changeFilmInfo
+// @Accept json
+// @Produce json
+// @Param body body model.ChangeFilmInfoRequest true "Film information to change"
+// @Security JWTAdminAuth
+// @Success 201 {object} model.FilmModelResponse "Film information changed successfully"
+// @Failure 400 {object} model.ErrResponse "Invalid JSON or missing fields"
+// @Router /film/changeFilmInfo [post]
 func (i *ImplementationLibriary) ChangeFilmInfo(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != http.MethodPost {

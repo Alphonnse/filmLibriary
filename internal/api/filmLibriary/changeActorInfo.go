@@ -11,6 +11,16 @@ import (
 	"github.com/Alphonnse/filmLibriary/internal/model"
 )
 
+// @Summary Change actor information
+// @Description Update information about an existing actor
+// @ID changeActorInfo
+// @Accept json
+// @Produce json
+// @Param body body model.ChangeActorInfoRequest true "Actor information to change"
+// @Security JWTAdminAuth
+// @Success 201 {object} model.ActorModel "Actor information changed successfully"
+// @Failure 400 {object} model.ErrResponse "Invalid JSON or missing fields"
+// @Router /actor/changeActorInfo [post]
 func (i *ImplementationLibriary) ChangeActorInfo(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != http.MethodPost {

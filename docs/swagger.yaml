@@ -1,0 +1,468 @@
+basePath: /
+definitions:
+  model.ActorModel:
+    properties:
+      birthday:
+        type: string
+      created_at:
+        type: string
+      name:
+        type: string
+      otherInfo:
+        type: string
+      sex:
+        type: string
+      updated_at:
+        type: string
+      uuid:
+        type: string
+    type: object
+  model.AddActorInfoRequest:
+    properties:
+      birthday:
+        type: string
+      name:
+        type: string
+      otherInfo:
+        type: string
+      sex:
+        type: string
+    type: object
+  model.AddFilmInfoRequest:
+    properties:
+      actors:
+        items:
+          $ref: '#/definitions/model.AddActorInfoRequest'
+        type: array
+      description:
+        type: string
+      rate:
+        type: integer
+      releaseDate:
+        type: string
+      title:
+        type: string
+    type: object
+  model.ChangeActorInfoRequest:
+    properties:
+      birthday:
+        type: string
+      name:
+        type: string
+      otherInfo:
+        type: string
+      sex:
+        type: string
+      uuid:
+        type: string
+    type: object
+  model.ChangeFilmInfoRequest:
+    properties:
+      actors:
+        items:
+          $ref: '#/definitions/model.ChangeActorInfoRequest'
+        type: array
+      description:
+        type: string
+      rate:
+        type: integer
+      releaseDate:
+        type: string
+      title:
+        type: string
+      uuid:
+        type: string
+    type: object
+  model.ErrResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  model.FilmModelResponse:
+    properties:
+      actors:
+        items:
+          $ref: '#/definitions/model.ActorModel'
+        type: array
+      created_at:
+        type: string
+      description:
+        type: string
+      rate:
+        type: integer
+      releaseDate:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+      uuid:
+        type: string
+    type: object
+  model.FilmsListModel:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      rate:
+        type: integer
+      releaseDate:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+      uuid:
+        type: string
+    type: object
+  model.GetActorsAndTeirFilmsService:
+    properties:
+      actorsList:
+        additionalProperties:
+          items:
+            type: string
+          type: array
+        type: object
+    type: object
+  model.GetFilmsListByFragmentRequest:
+    properties:
+      fragment:
+        type: string
+      fragmentOf:
+        type: string
+    type: object
+  model.GetFilmsListRequest:
+    properties:
+      order:
+        type: string
+      sortBy:
+        type: string
+    type: object
+  model.Login:
+    properties:
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  model.Register:
+    properties:
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  model.UserRequestModel:
+    properties:
+      name:
+        type: string
+      role_id:
+        type: integer
+      uuid:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Its the Film Libtiary app that uses pSQL, JWT netHttp lib
+  title: Film Libriary RestAPI app
+  version: "1.0"
+paths:
+  /actor/addActorInfo:
+    post:
+      consumes:
+      - application/json
+      description: Add information about a new actor
+      operationId: addActorInfo
+      parameters:
+      - description: JWT token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Actor information to add
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.AddActorInfoRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Actor information added successfully
+          schema:
+            $ref: '#/definitions/model.ActorModel'
+        "400":
+          description: Invalid JSON or missing fields
+          schema:
+            $ref: '#/definitions/model.ErrResponse'
+      security:
+      - JWTAdminAuth: []
+      summary: Add actor information
+  /actor/changeActorInfo:
+    post:
+      consumes:
+      - application/json
+      description: Update information about an existing actor
+      operationId: changeActorInfo
+      parameters:
+      - description: Actor information to change
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.ChangeActorInfoRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Actor information changed successfully
+          schema:
+            $ref: '#/definitions/model.ActorModel'
+        "400":
+          description: Invalid JSON or missing fields
+          schema:
+            $ref: '#/definitions/model.ErrResponse'
+      security:
+      - JWTAdminAuth: []
+      summary: Change actor information
+  /actor/getList:
+    get:
+      description: Retrieve a list of actors along with the films they are associated
+        with
+      operationId: getActorsInfoListWithFilms
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of actors with associated films
+          schema:
+            $ref: '#/definitions/model.GetActorsAndTeirFilmsService'
+        "400":
+          description: Invalid JSON or missing fields
+          schema:
+            $ref: '#/definitions/model.ErrResponse'
+      security:
+      - JWTRegularUserAuth: []
+      summary: Get list of actors with their associated films
+  /actor/remove/{actorID}:
+    delete:
+      description: Remove information about a specific actor by UUID
+      operationId: rmActorInfo
+      parameters:
+      - description: UUID of the actor to remove
+        in: path
+        name: actorID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Actor information removed successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid JSON or missing fields
+          schema:
+            $ref: '#/definitions/model.ErrResponse'
+      security:
+      - JWTAdminAuth: []
+      summary: Remove actor information
+  /film/addFilmInfo:
+    post:
+      consumes:
+      - application/json
+      description: Add information about a new film
+      operationId: addFilmInfo
+      parameters:
+      - description: Film information to add
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.AddFilmInfoRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Film information added successfully
+          schema:
+            $ref: '#/definitions/model.FilmModelResponse'
+        "400":
+          description: Invalid JSON or missing fields
+          schema:
+            $ref: '#/definitions/model.ErrResponse'
+      security:
+      - JWTAdminAuth: []
+      summary: Add film information
+  /film/changeFilmInfo:
+    post:
+      consumes:
+      - application/json
+      description: Update information about an existing film
+      operationId: changeFilmInfo
+      parameters:
+      - description: Film information to change
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.ChangeFilmInfoRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Film information changed successfully
+          schema:
+            $ref: '#/definitions/model.FilmModelResponse'
+        "400":
+          description: Invalid JSON or missing fields
+          schema:
+            $ref: '#/definitions/model.ErrResponse'
+      security:
+      - JWTAdminAuth: []
+      summary: Change film information
+  /film/findFilm:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of films based on a search fragment
+      operationId: getFilmsListByFragment
+      parameters:
+      - description: Search fragment for films
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.GetFilmsListByFragmentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of films matching the search fragment
+          schema:
+            items:
+              $ref: '#/definitions/model.FilmsListModel'
+            type: array
+        "400":
+          description: Invalid JSON or missing fields
+          schema:
+            $ref: '#/definitions/model.ErrResponse'
+      security:
+      - JWTRegularUserAuth: []
+      summary: Get list of films by fragment
+  /film/getList:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of films based on specified criteria
+      operationId: getFilmsList
+      parameters:
+      - description: Criteria for retrieving films list
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.GetFilmsListRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of films based on criteria
+          schema:
+            items:
+              $ref: '#/definitions/model.FilmsListModel'
+            type: array
+        "400":
+          description: Invalid JSON or missing fields
+          schema:
+            $ref: '#/definitions/model.ErrResponse'
+      security:
+      - JWTRegularUserAuth: []
+      summary: Get list of films
+  /film/remove/{filmID}:
+    delete:
+      description: Remove information about a specific film by UUID
+      operationId: rmFilmInfo
+      parameters:
+      - description: UUID of the film to remove
+        in: path
+        name: filmID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Film information removed successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid JSON or missing fields
+          schema:
+            $ref: '#/definitions/model.ErrResponse'
+      security:
+      - JWTAdminAuth: []
+      summary: Remove film information
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Log in with user credentials to get access token
+      operationId: loginUser
+      parameters:
+      - description: User login credentials
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.Login'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User logged in successfully
+          schema:
+            $ref: '#/definitions/model.UserRequestModel'
+        "400":
+          description: Invalid JSON or missing fields
+          schema:
+            $ref: '#/definitions/model.ErrResponse'
+        "500":
+          description: Failed to log in user
+          schema:
+            $ref: '#/definitions/model.ErrResponse'
+      summary: Login as a user
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user with the provided details
+      operationId: registerUser
+      parameters:
+      - description: User registration details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.Register'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User registered successfully
+          schema:
+            $ref: '#/definitions/model.UserRequestModel'
+        "400":
+          description: Invalid JSON or missing fields
+          schema:
+            $ref: '#/definitions/model.ErrResponse'
+        "500":
+          description: Failed to register user
+          schema:
+            $ref: '#/definitions/model.ErrResponse'
+      summary: Register a new user
+swagger: "2.0"

@@ -12,6 +12,16 @@ import (
 )
 
 // registration of user and adding user 
+// @Summary Register a new user
+// @Description Register a new user with the provided details
+// @ID registerUser
+// @Accept json
+// @Produce json
+// @Param body body model.Register true "User registration details"
+// @Success 201 {object} model.UserRequestModel "User registered successfully"
+// @Failure 400 {object} model.ErrResponse "Invalid JSON or missing fields"
+// @Failure 500 {object} model.ErrResponse "Failed to register user"
+// @Router /register [post]
 func (i *ImplementationUser) AddUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		api.RespondWithError(w, 400, fmt.Sprintf("Wrong method: %s", r.Method))
@@ -44,4 +54,7 @@ func (i *ImplementationUser) AddUser(w http.ResponseWriter, r *http.Request) {
 
 	api.RespondWithJSON(w, 201, addUserInfo)
 	log.Printf("user %s is registered", params.Name)
+}
+func (i *ImplementationUser) Test(w http.ResponseWriter, r *http.Request) {
+	api.RespondWithJSON(w, 201, "all rigth")
 }

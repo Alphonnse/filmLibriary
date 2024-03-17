@@ -11,6 +11,16 @@ import (
 	"github.com/Alphonnse/filmLibriary/internal/model"
 )
 
+// @Summary Get list of films
+// @Description Retrieve a list of films based on specified criteria
+// @ID getFilmsList
+// @Accept json
+// @Produce json
+// @Param body body model.GetFilmsListRequest true "Criteria for retrieving films list"
+// @Security JWTRegularUserAuth
+// @Success 200 {object} []model.FilmsListModel "List of films based on criteria"
+// @Failure 400 {object} model.ErrResponse "Invalid JSON or missing fields"
+// @Router /film/getList [get]
 func (i *ImplementationLibriary) GetFilmsList(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		api.RespondWithError(w, 400, fmt.Sprintf("Wrong method: %s", r.Method))

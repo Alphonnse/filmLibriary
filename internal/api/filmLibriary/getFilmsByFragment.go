@@ -11,6 +11,16 @@ import (
 	"github.com/Alphonnse/filmLibriary/internal/model"
 )
 
+// @Summary Get list of films by fragment
+// @Description Retrieve a list of films based on a search fragment
+// @ID getFilmsListByFragment
+// @Accept json
+// @Produce json
+// @Param body body model.GetFilmsListByFragmentRequest true "Search fragment for films"
+// @Security JWTRegularUserAuth
+// @Success 200 {object} []model.FilmsListModel "List of films matching the search fragment"
+// @Failure 400 {object} model.ErrResponse "Invalid JSON or missing fields"
+// @Router /film/findFilm [get]
 func (i *ImplementationLibriary) GetFilmsListByFragment(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		api.RespondWithError(w, 400, fmt.Sprintf("Wrong method: %s", r.Method))

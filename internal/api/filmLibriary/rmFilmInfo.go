@@ -11,6 +11,15 @@ import (
 	"github.com/google/uuid"
 )
 
+// @Summary Remove film information
+// @Description Remove information about a specific film by UUID
+// @ID rmFilmInfo
+// @Produce json
+// @Param filmID path string true "UUID of the film to remove"
+// @Security JWTAdminAuth
+// @Success 200 {string} string "Film information removed successfully"
+// @Failure 400 {object} model.ErrResponse "Invalid JSON or missing fields"
+// @Router /film/remove/{filmID} [delete]
 func (i *ImplementationLibriary) RmFilmInfo(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != http.MethodDelete {

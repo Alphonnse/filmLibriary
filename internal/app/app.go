@@ -5,8 +5,17 @@ import (
 	"log"
 	"net/http"
 
+	_ "github.com/Alphonnse/filmLibriary/docs"
 	"github.com/Alphonnse/filmLibriary/internal/config"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
+
+// @title Film Libriary RestAPI app
+// @version 1.0
+// @description Its the Film Libtiary app that uses pSQL, JWT netHttp lib
+
+// @host localhost:8080
+// @BasePath /
 
 type App struct {
 	serviceProvider *serviceProvider
@@ -93,10 +102,11 @@ func (a *App) runServer() error {
 }
 
 func (a *App) setupRoutes() {
+	a.mux.Handle("/swagger/", httpSwagger.Handler(httpSwagger.URL("http://localhost:8000/swagger/doc.json")))
 	a.mux.HandleFunc("/actor/addActorInfo", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.AddActorInfo))
 	a.mux.HandleFunc("/actor/changeActorInfo", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.ChangeActorInfo))
 	a.mux.HandleFunc("/actor/remove/", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.RmActorInfo))
-	a.mux.HandleFunc("/actor/letList", a.serviceProvider.authService.JWTRegularUserAuth(a.serviceProvider.libriaryImpl.GetActorsInfoListWithFilms))
+	a.mux.HandleFunc("/actor/getList", a.serviceProvider.authService.JWTRegularUserAuth(a.serviceProvider.libriaryImpl.GetActorsInfoListWithFilms))
 	a.mux.HandleFunc("/film/addFilmInfo", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.AddFilmInfo))
 	a.mux.HandleFunc("/film/changeFilmInfo", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.ChangeFilmInfo))
 	a.mux.HandleFunc("/film/remove/", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.RmFilmInfo))
@@ -104,4 +114,10 @@ func (a *App) setupRoutes() {
 	a.mux.HandleFunc("/film/findFilm", a.serviceProvider.authService.JWTRegularUserAuth(a.serviceProvider.libriaryImpl.GetFilmsListByFragment))
 	a.mux.HandleFunc("/register", a.serviceProvider.userImpl.AddUser)
 	a.mux.HandleFunc("/login", a.serviceProvider.userImpl.GetUser)
+	a.mux.HandleFunc("/test/{some_shit}", a.serviceProvider.userImpl.Test)
+}
+
+type userInput struct {
+	Name string `json:"name"`
+	Age  int    `json:"age"`
 }
