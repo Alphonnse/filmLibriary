@@ -118,6 +118,7 @@ func (a *App) setupRoutes() {
 	// Find film acceptable paths in /film/finFilm/{fragment_of}||none/{fragment}||none
 	a.mux.HandleFunc("/film/findFilm/", a.serviceProvider.authService.JWTRegularUserAuth(a.serviceProvider.libriaryImpl.GetFilmsListByFragment))
 	// authorization
+	a.mux.HandleFunc("/registerAdmin", a.serviceProvider.userImpl.AddUserAdmin)
 	a.mux.HandleFunc("/register", a.serviceProvider.userImpl.AddUser)
 	a.mux.HandleFunc("/login", a.serviceProvider.userImpl.GetUser)
 }

@@ -16,25 +16,25 @@ type ServiceUserShape struct {
 	mock.Mock
 }
 
-// AddUser provides a mock function with given fields: _a0, _a1
-func (_m *ServiceUserShape) AddUser(_a0 context.Context, _a1 *model.UserModel) (*model.UserRequestModel, error) {
-	ret := _m.Called(_a0, _a1)
+// AddUser provides a mock function with given fields: _a0, _a1, _a2
+func (_m *ServiceUserShape) AddUser(_a0 context.Context, _a1 *model.UserModel, _a2 bool) (*model.UserRequestModel, error) {
+	ret := _m.Called(_a0, _a1, _a2)
 
 	var r0 *model.UserRequestModel
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *model.UserModel) (*model.UserRequestModel, error)); ok {
-		return rf(_a0, _a1)
+	if rf, ok := ret.Get(0).(func(context.Context, *model.UserModel, bool) (*model.UserRequestModel, error)); ok {
+		return rf(_a0, _a1, _a2)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *model.UserModel) *model.UserRequestModel); ok {
-		r0 = rf(_a0, _a1)
+	if rf, ok := ret.Get(0).(func(context.Context, *model.UserModel, bool) *model.UserRequestModel); ok {
+		r0 = rf(_a0, _a1, _a2)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*model.UserRequestModel)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *model.UserModel) error); ok {
-		r1 = rf(_a0, _a1)
+	if rf, ok := ret.Get(1).(func(context.Context, *model.UserModel, bool) error); ok {
+		r1 = rf(_a0, _a1, _a2)
 	} else {
 		r1 = ret.Error(1)
 	}

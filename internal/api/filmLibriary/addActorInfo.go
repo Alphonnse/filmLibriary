@@ -17,7 +17,6 @@ import (
 // @ID addActorInfo
 // @Accept json
 // @Produce json
-// @Param Authorization header string true "JWT token"
 // @Param body body model.AddActorInfoRequest true "Actor information to add"
 // @Security JWTAdminAuth
 // @Success 201 {object} model.ActorModel "Actor information added successfully"

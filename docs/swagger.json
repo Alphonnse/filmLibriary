@@ -27,13 +27,6 @@
                 "operationId": "addActorInfo",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "JWT token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
                         "description": "Actor information to add",
                         "name": "body",
                         "in": "body",
@@ -412,6 +405,50 @@
                 ],
                 "summary": "Register a new user",
                 "operationId": "registerUser",
+                "parameters": [
+                    {
+                        "description": "User registration details",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Register"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully",
+                        "schema": {
+                            "$ref": "#/definitions/model.UserRequestModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid JSON or missing fields",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to register user",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/registerAdmin": {
+            "post": {
+                "description": "Register a new user with the provided details as admin",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Register a new user with admin permissions",
+                "operationId": "registerUserAdmin",
                 "parameters": [
                     {
                         "description": "User registration details",

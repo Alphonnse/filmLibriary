@@ -27,7 +27,7 @@ func TestAddUser(t *testing.T) {
 	assert.NoError(t, err)
 	responseModel.Role_id = 2
 
-	mockService.On("AddUser", mock.Anything, &mockUserModel).Return(&responseModel, nil)
+	mockService.On("AddUser", mock.Anything, &mockUserModel, false).Return(&responseModel, nil)
 
 	requestBodyJSON, err := json.Marshal(mockUserModel)
 	assert.NoError(t, err)
@@ -39,6 +39,35 @@ func TestAddUser(t *testing.T) {
 
 	handler := user.NewImplementationUser(mockService)
 	handler.AddUser(rec, req)
+
+	assert.Equal(t, http.StatusCreated, rec.Code)
+	mockService.AssertExpectations(t)
+}
+
+func TestAddUserAdmin(t *testing.T) {
+	mockService := new(mocks.ServiceUserShape)
+
+	var mockUserModel model.UserModel
+	mockUserModel.Password = faker.Password()
+	mockUserModel.Name = faker.Name()
+
+	var responseModel model.UserRequestModel
+	err := faker.FakeData(&responseModel)
+	assert.NoError(t, err)
+	responseModel.Role_id = 1
+
+	mockService.On("AddUser", mock.Anything, &mockUserModel, true).Return(&responseModel, nil)
+
+	requestBodyJSON, err := json.Marshal(mockUserModel)
+	assert.NoError(t, err)
+
+	req, err := http.NewRequest(http.MethodPost, "/registerAdmin", bytes.NewBuffer(requestBodyJSON))
+	assert.NoError(t, err)
+
+	rec := httptest.NewRecorder()
+
+	handler := user.NewImplementationUser(mockService)
+	handler.AddUserAdmin(rec, req)
 
 	assert.Equal(t, http.StatusCreated, rec.Code)
 	mockService.AssertExpectations(t)

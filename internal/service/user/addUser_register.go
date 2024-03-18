@@ -13,16 +13,20 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (s *serviceUser) AddUser(ctx context.Context, model *model.UserModel) (*model.UserRequestModel, error) {
+func (s *serviceUser) AddUser(ctx context.Context, model *model.UserModel, admin bool) (*model.UserRequestModel, error) {
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(model.Password), 10) // last argument is the coast
 	if err != nil {
 		return nil, errors.New(fmt.Sprint("Error while hashing the password:", err))
 	}
 
+	roleID := 2
+	if admin {
+		roleID = 1
+	} 
 	addedUserInfo, err := s.UserRepository.AddUser(ctx, generated.AddUserParams{
 		ID:        uuid.New(),
-		RoleID:    int32(2),
+		RoleID:    int32(roleID),
 		Name:      model.Name,
 		Password:  string(hash),
 		CreatedAt: time.Now().UTC(),

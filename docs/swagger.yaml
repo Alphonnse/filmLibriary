@@ -162,11 +162,6 @@ paths:
       description: Add information about a new actor
       operationId: addActorInfo
       parameters:
-      - description: JWT token
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: Actor information to add
         in: body
         name: body
@@ -435,4 +430,33 @@ paths:
           schema:
             $ref: '#/definitions/model.ErrResponse'
       summary: Register a new user
+  /registerAdmin:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user with the provided details as admin
+      operationId: registerUserAdmin
+      parameters:
+      - description: User registration details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.Register'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User registered successfully
+          schema:
+            $ref: '#/definitions/model.UserRequestModel'
+        "400":
+          description: Invalid JSON or missing fields
+          schema:
+            $ref: '#/definitions/model.ErrResponse'
+        "500":
+          description: Failed to register user
+          schema:
+            $ref: '#/definitions/model.ErrResponse'
+      summary: Register a new user with admin permissions
 swagger: "2.0"
