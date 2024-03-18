@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/Alphonnse/filmLibriary/internal/api"
+	"github.com/Alphonnse/filmLibriary/internal/api/validator"
 	"github.com/Alphonnse/filmLibriary/internal/convertor"
 )
 
@@ -23,7 +24,7 @@ func (i *ImplementationLibriary) GetFilmsListByFragment(w http.ResponseWriter, r
 		return
 	}
 
-	validErrs, fragmentOf, fragment := ValidateGetFilmsListByFragment(r.URL)
+	validErrs, fragmentOf, fragment := validator.ValidateGetFilmsListByFragment(r.URL)
 	if len(validErrs) > 0 {
 		log.Printf("Invalid JSON: %v", validErrs)
 		api.RespondWithError(w, 406, fmt.Sprintf("Invalid JSON: %v", validErrs))

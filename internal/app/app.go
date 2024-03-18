@@ -110,14 +110,10 @@ func (a *App) setupRoutes() {
 	a.mux.HandleFunc("/film/addFilmInfo", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.AddFilmInfo))
 	a.mux.HandleFunc("/film/changeFilmInfo", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.ChangeFilmInfo))
 	a.mux.HandleFunc("/film/remove/", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.RmFilmInfo))
+	// Find film acceptable paths in /film/finFilm/{list_by}||none/{order}||none
 	a.mux.HandleFunc("/film/getList/", a.serviceProvider.authService.JWTRegularUserAuth(a.serviceProvider.libriaryImpl.GetFilmsList))
+	// Find film acceptable paths in /film/finFilm/{fragment_of}||none/{fragment}||none
 	a.mux.HandleFunc("/film/findFilm/", a.serviceProvider.authService.JWTRegularUserAuth(a.serviceProvider.libriaryImpl.GetFilmsListByFragment))
 	a.mux.HandleFunc("/register", a.serviceProvider.userImpl.AddUser)
 	a.mux.HandleFunc("/login", a.serviceProvider.userImpl.GetUser)
-	a.mux.HandleFunc("/test/{some_shit}", a.serviceProvider.userImpl.Test)
-}
-
-type userInput struct {
-	Name string `json:"name"`
-	Age  int    `json:"age"`
 }

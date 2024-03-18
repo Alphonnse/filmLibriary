@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/Alphonnse/filmLibriary/internal/api"
-	"github.com/Alphonnse/filmLibriary/internal/convertor"
 	"github.com/google/uuid"
 )
 
@@ -21,7 +20,6 @@ import (
 // @Failure 400 {object} model.ErrResponse "Invalid JSON or missing fields"
 // @Router /actor/remove/{actorID} [delete]
 func (i *ImplementationLibriary) RmActorInfo(w http.ResponseWriter, r *http.Request) {
-
 	if r.Method != http.MethodDelete {
 		api.RespondWithError(w, 400, fmt.Sprintf("Wrong method: %s", r.Method))
 		return
@@ -37,7 +35,7 @@ func (i *ImplementationLibriary) RmActorInfo(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	err = i.libriaryService.RmActorInfo(r.Context(), convertor.FromApiRmActorInfoToService(actorID))
+	err = i.libriaryService.RmActorInfo(r.Context(), actorID)
 	if err != nil {
 		log.Printf("Error removing actor info: %v\n", err)
 		api.RespondWithError(w, 400, fmt.Sprintf("Couldn't remove actor info: %v", err))

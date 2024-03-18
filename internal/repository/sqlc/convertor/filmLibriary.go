@@ -106,20 +106,6 @@ func FromDatabaseGetActorsListToActorsListByFragment(dbActor []generated.Actor, 
 }
 
 func FromDatabseGetActorsListWithFilmsToService(dblist []generated.GetActorsListWithFilmsRow) *model.GetActorsAndTeirFilmsService {
-	// actorsMap := make(map[string][]string)
-	//
-	// for _, row := range dblist {
-	// 	if _, ok := actorsMap[row.ActorName]; !ok {
-	// 		actorsMap[row.ActorName] = make([]string, 0)
-	// 	}
-	// 	actorsMap[row.ActorName] = append(actorsMap[row.ActorName], row.FilmTitle)
-	// }
-	//
-	// service := &model.GetActorsAndTeirFilmsService{
-	// 	List: actorsMap,
-	// }
-	//
-	// return service
 	service := &model.GetActorsAndTeirFilmsService{
 		List: make(map[string][]string),
 	}

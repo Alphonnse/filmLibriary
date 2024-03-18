@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/Alphonnse/filmLibriary/internal/api"
+	"github.com/Alphonnse/filmLibriary/internal/api/validator"
 	"github.com/Alphonnse/filmLibriary/internal/convertor"
 )
 
@@ -16,14 +17,14 @@ import (
 // @Security JWTRegularUserAuth
 // @Success 200 {object} []model.FilmsListModel "List of films based on criteria"
 // @Failure 400 {object} model.ErrResponse "Invalid JSON or missing fields"
-// @Router /film/getList [get]
+// @Router /film/getList/ [get]
 func (i *ImplementationLibriary) GetFilmsList(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		api.RespondWithError(w, 400, fmt.Sprintf("Wrong method: %s", r.Method))
 		return
 	}
 
-	validErrs, sortBy, orderBy := ValidateGetFilmsList(r.URL); 
+	validErrs, sortBy, orderBy := validator.ValidateGetFilmsList(r.URL); 
 	if len(validErrs) > 0 {
 		log.Printf("Invalid JSON: %v", validErrs)
 		api.RespondWithError(w, 406, fmt.Sprintf("Invalid JSON: %v", validErrs))

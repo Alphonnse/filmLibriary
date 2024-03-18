@@ -7,11 +7,12 @@ import (
 	"net/http"
 
 	"github.com/Alphonnse/filmLibriary/internal/api"
+	"github.com/Alphonnse/filmLibriary/internal/api/validator"
 	"github.com/Alphonnse/filmLibriary/internal/convertor"
 	"github.com/Alphonnse/filmLibriary/internal/model"
 )
 
-// registration of user and adding user 
+// registration of user and adding user
 // @Summary Register a new user
 // @Description Register a new user with the provided details
 // @ID registerUser
@@ -39,7 +40,7 @@ func (i *ImplementationUser) AddUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if validErrs := ValidateUserAddRequest(&params); len(validErrs) > 0 {
+	if validErrs := validator.ValidateUserAddRequest(&params); len(validErrs) > 0 {
 		log.Printf("Invalid JSON: %v", validErrs)
 		api.RespondWithError(w, 400, fmt.Sprintf("Invalid JSON: %v", validErrs))
 		return

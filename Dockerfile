@@ -13,6 +13,8 @@ COPY . .
 RUN make install-deps
 RUN make get-deps
 
+RUN go generate ./...
+
 COPY .env .
 ENV SERVER_HOST=${SERVER_HOST} \
     SERVER_PORT=${SERVER_PORT} \

@@ -1,7 +1,8 @@
-package filmlibriary
+package validator 
 
 import (
 	"net/url"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -10,14 +11,14 @@ import (
 
 func ValidateActorAddRequest(model *model.AddActorInfoRequest) url.Values {
 	errs := url.Values{}
-	if model.Name == "" {
+	if model.Name == "" || strings.Contains(model.Name, "/") {
 		errs.Add("name", "the filed is required")
 	}
 	if model.Sex == "" {
 		errs.Add("sex", "the field is required")
 	}
-	if model.Birthday == "" {
-		errs.Add("birthday", "the field is required")
+	if !isValidDateFormat(model.Birthday) {
+		errs.Add("birthday", "invalid format or blank")
 	}
 	return errs
 }
@@ -32,17 +33,17 @@ func ValidateChangeActorRequest(model *model.ChangeActorInfoRequest) url.Values 
 
 func ValidateAddFilmInfoRequest(model *model.AddFilmInfoRequest) url.Values {
 	errs := url.Values{}
-	if len(model.Title) < 1 || len(model.Title) > 150 {
+	if len(model.Title) < 1 || len(model.Title) > 150 || strings.Contains(model.Title, "/") {
 		errs.Add("title", "should be length of 1;150")
 	}
 	if len(model.Description) < 1 || len(model.Description) > 1000 {
 		errs.Add("description", "is not proper long")
 	}
-	if model.Rate < 0 || model.Rate > 10 {
+	if model.Rate < 1 || model.Rate > 10 {
 		errs.Add("rate", "should be in range 1;10")
 	}
-	if model.ReleaseDate == "" {
-		errs.Add("releaseDate", "the field is required")
+	if !isValidDateFormat(model.ReleaseDate) {
+		errs.Add("releaseDate", "invalid format or blank")
 	}
 	if len(model.Actors) < 1 {
 		errs.Add("actors", "the field is required")
@@ -64,11 +65,14 @@ func ValidateChangeFilmInfoRequest(model *model.ChangeFilmInfoRequest) url.Value
 	if model.UUID.String() == "" || model.UUID.String() == "00000000-0000-0000-0000-000000000000" {
 		errs.Add("UUID", "wrong UUID")
 	}
-	if len(model.Title) < 1 || len(model.Title) > 150 {
+	if len(model.Title) < 1 || len(model.Title) > 150 || strings.Contains(model.Title, "/"){
 		errs.Add("title", "should be length of 1;150")
 	}
 	if len(model.Description) < 1 || len(model.Description) > 1000 {
 		errs.Add("description", "is not proper long")
+	}
+	if !isValidDateFormat(model.ReleaseDate) && model.ReleaseDate != "" {
+		errs.Add("releaseDate", "invalid format or blank")
 	}
 	if model.Rate < 0 || model.Rate > 10 {
 		errs.Add("rate", "should be in range 1;10")
@@ -123,9 +127,14 @@ func ValidateGetFilmsListByFragment(urlReq *url.URL) (url.Values, string, string
 	}
 	if len(UrlParts) == 5 {
 		fragment = UrlParts[4]
-		if fragment == "" {
+		if fragment == "" || strings.Contains(fragment, "/"){
 			errs.Add("fragment", "the url part is required")
 		}
 	}
 	return errs, fragmentOf, fragment
+}
+
+func isValidDateFormat(birthday string) bool {
+	re := regexp.MustCompile(`^\d{4}-\d{2}-\d{2}$`)
+	return re.MatchString(birthday)
 }

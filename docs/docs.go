@@ -293,7 +293,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/film/getList": {
+        "/film/getList/": {
             "get": {
                 "security": [
                     {

@@ -2,11 +2,16 @@ package filmlibriary
 
 import (
 	"context"
+	"errors"
 
-	"github.com/Alphonnse/filmLibriary/internal/model"
+	"github.com/google/uuid"
 )
 
 
-func (s *serviceLibriary) RmActorInfo(ctx context.Context, model *model.ActorModel) (error) {
-	return s.libriaryRepository.RmActorInfo(ctx, model.UUID)
+func (s *serviceLibriary) RmActorInfo(ctx context.Context, uuid uuid.UUID) (error) {
+	_, err := s.libriaryRepository.GetActorByID(ctx, uuid)
+	if err == nil {
+		return s.libriaryRepository.RmActorInfo(ctx, uuid)
+	}
+	return errors.New("No actor with what uuid in DB")
 }

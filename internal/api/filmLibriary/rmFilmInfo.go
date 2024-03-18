@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/Alphonnse/filmLibriary/internal/api"
-	"github.com/Alphonnse/filmLibriary/internal/convertor"
 	"github.com/google/uuid"
 )
 
@@ -37,7 +36,7 @@ func (i *ImplementationLibriary) RmFilmInfo(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	err = i.libriaryService.RmFilmInfo(r.Context(), convertor.FromApiRmFilmInfoToService(filmID))
+	err = i.libriaryService.RmFilmInfo(r.Context(), filmID)
 	if err != nil {
 		log.Printf("Error removing film info: %v\n", err)
 		api.RespondWithError(w, 400, fmt.Sprintf("Couldn't remove film info: %v", err))

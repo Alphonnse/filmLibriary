@@ -32,7 +32,7 @@ func (s *serviceLibriary) AddFilmInfo(ctx context.Context, info *model.FilmModel
 	for _, actor := range info.Actors {
 		addedActorModel, err := s.AddActorInfo(ctx, convertor.FromApiAddActorInfoToService(&actor))
 		if err != nil {
-			return addedFilmInfo, err
+			return nil, err
 		}
 		addedFilmInfo.Actors = append(addedFilmInfo.Actors, addedActorModel)
 		s.libriaryRepository.InsertIntoActorToFilme(ctx, generated.InsertIntoActorToFilmeParams{

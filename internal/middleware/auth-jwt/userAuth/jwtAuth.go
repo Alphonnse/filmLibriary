@@ -64,7 +64,6 @@ func (a *auth) ValidateRegularUesrRoleJWT(w http.ResponseWriter, r *http.Request
 	return errors.New("invalid admin token provided token") 
 }
 
-////////////////////// mabe there should be a pointer to model
 func (a *auth) CurrentUser(ctx context.Context, w http.ResponseWriter, r *http.Request) *model.UserModel {
 	err := a.ValidateJWT(w, r)
 	if err != nil {

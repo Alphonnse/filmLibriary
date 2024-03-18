@@ -8,6 +8,7 @@ import (
 	"github.com/google/uuid"
 )
 
+//go:generate go run github.com/vektra/mockery/v2@v2.35.4 --name Respository
 type Respository interface {
 	AddActorInfo(context.Context, generated.AddActorInfoParams) (*model.ActorModel, error)
 	ChangeActorInfo(context.Context, generated.ChangeActorInfoParams) (*model.ActorModel, error)

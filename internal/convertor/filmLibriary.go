@@ -2,7 +2,6 @@ package convertor
 
 import (
 	"github.com/Alphonnse/filmLibriary/internal/model"
-	"github.com/google/uuid"
 )
 
 func FromApiAddActorInfoToService(info *model.AddActorInfoRequest) *model.ActorModel {
@@ -21,18 +20,6 @@ func FromApiChangeActorInfoToService(info *model.ChangeActorInfoRequest) *model.
 		Sex:       info.Sex,
 		Birthday:  info.Birthday,
 		OtherInfo: info.OtherInfo,
-	}
-}
-
-func FromApiRmActorInfoToService(uuid uuid.UUID) *model.ActorModel {
-	return &model.ActorModel{
-		UUID: uuid,
-	}
-}
-
-func FromApiRmFilmInfoToService(uuid uuid.UUID) *model.FilmModel {
-	return &model.FilmModel{
-		UUID: uuid,
 	}
 }
 

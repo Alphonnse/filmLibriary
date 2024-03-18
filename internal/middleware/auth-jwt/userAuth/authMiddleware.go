@@ -20,7 +20,7 @@ func (a *auth) JWTAdminAuth(handler func(http.ResponseWriter, *http.Request)) ht
 		}
 		err = a.ValidateAdminRoleJwt(w, r)
 		if err != nil {
-			api.RespondWithError(w, 500, fmt.Sprintf("Error authorization: %v", err))
+			api.RespondWithJSON(w, 401, fmt.Sprintf("Error authorization: %v", err))
 			return
 		}
 		handler(w, r)

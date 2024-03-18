@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/Alphonnse/filmLibriary/internal/api"
+	"github.com/Alphonnse/filmLibriary/internal/api/validator"
 	"github.com/Alphonnse/filmLibriary/internal/convertor"
 	"github.com/Alphonnse/filmLibriary/internal/model"
 )
@@ -40,7 +41,7 @@ func (i *ImplementationLibriary) AddActorInfo(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	if validErrs := ValidateActorAddRequest(&params); len(validErrs) > 0 {
+	if validErrs := validator.ValidateActorAddRequest(&params); len(validErrs) > 0 {
 		log.Printf("Invalid JSON: %v", validErrs)
 		api.RespondWithError(w, 400, fmt.Sprintf("Invalid JSON: %v", validErrs))
 		return

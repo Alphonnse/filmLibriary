@@ -332,7 +332,7 @@ paths:
       security:
       - JWTRegularUserAuth: []
       summary: Get list of films by fragment
-  /film/getList:
+  /film/getList/:
     get:
       description: Retrieve a list of films based on specified criteria. It should
         look like /film/getList/{sortBy}|none|/{orderBy}|none|

@@ -1,4 +1,4 @@
-package user
+package validator
 
 import (
 	"net/url"
