@@ -161,7 +161,7 @@ func TestGetFilmsFragment(t *testing.T) {
 
 			res, err := handler.GetFilmsListByFragment(nil, &model.GetFilmsListByFragmentService{
 				FragmentOf: testCase.fragmentOf,
-				Fragment: testCase.fragment,
+				Fragment:   testCase.fragment,
 			})
 
 			assert.NoError(t, err)

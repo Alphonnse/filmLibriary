@@ -13,5 +13,5 @@ func (s *serviceLibriary) RmActorInfo(ctx context.Context, uuid uuid.UUID) (erro
 	if err == nil {
 		return s.libriaryRepository.RmActorInfo(ctx, uuid)
 	}
-	return errors.New("No actor with what uuid in DB")
+	return errors.New("No actor with that uuid in DB")
 }

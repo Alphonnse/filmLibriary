@@ -45,7 +45,6 @@ func FromDatabaseFilmToFilm(dbFilm *generated.Film) *model.FilmModel {
 
 func FromDatabaseFilmsListToFilmsList(dbFilm []generated.Film) []model.FilmsListModel {
 	sortedList := make([]model.FilmsListModel, len(dbFilm))
-	// прошу прощения за постыдную реализацию, не успел подумать над хорошей
 	for i, film := range dbFilm {
 		elem := model.FilmsListModel{
 			UUID:        film.ID,
