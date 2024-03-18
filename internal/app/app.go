@@ -103,17 +103,21 @@ func (a *App) runServer() error {
 
 func (a *App) setupRoutes() {
 	a.mux.Handle("/swagger/", httpSwagger.Handler(httpSwagger.URL("http://localhost:8000/swagger/doc.json")))
+	// POST
 	a.mux.HandleFunc("/actor/addActorInfo", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.AddActorInfo))
 	a.mux.HandleFunc("/actor/changeActorInfo", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.ChangeActorInfo))
-	a.mux.HandleFunc("/actor/remove/", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.RmActorInfo))
-	a.mux.HandleFunc("/actor/getList", a.serviceProvider.authService.JWTRegularUserAuth(a.serviceProvider.libriaryImpl.GetActorsInfoListWithFilms))
 	a.mux.HandleFunc("/film/addFilmInfo", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.AddFilmInfo))
 	a.mux.HandleFunc("/film/changeFilmInfo", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.ChangeFilmInfo))
+	// DELETE
+	a.mux.HandleFunc("/actor/remove/", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.RmActorInfo))
 	a.mux.HandleFunc("/film/remove/", a.serviceProvider.authService.JWTAdminAuth(a.serviceProvider.libriaryImpl.RmFilmInfo))
+	// GET
+	a.mux.HandleFunc("/actor/getList", a.serviceProvider.authService.JWTRegularUserAuth(a.serviceProvider.libriaryImpl.GetActorsInfoListWithFilms))
 	// Find film acceptable paths in /film/finFilm/{list_by}||none/{order}||none
 	a.mux.HandleFunc("/film/getList/", a.serviceProvider.authService.JWTRegularUserAuth(a.serviceProvider.libriaryImpl.GetFilmsList))
 	// Find film acceptable paths in /film/finFilm/{fragment_of}||none/{fragment}||none
 	a.mux.HandleFunc("/film/findFilm/", a.serviceProvider.authService.JWTRegularUserAuth(a.serviceProvider.libriaryImpl.GetFilmsListByFragment))
+	// authorization
 	a.mux.HandleFunc("/register", a.serviceProvider.userImpl.AddUser)
 	a.mux.HandleFunc("/login", a.serviceProvider.userImpl.GetUser)
 }

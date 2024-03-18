@@ -29,7 +29,7 @@ down-goose-migration:
 	cd postgresql/schema && goose postgres $(DB_URL) down && cd ../../
 
 build:
-	docker compose build .
+	docker build .
 
 run:
 	docker compose up
